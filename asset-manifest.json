@@ -1,23 +1,19 @@
 {
   "files": {
-    "main.css": "/Asteria/static/css/main.d1b05096.chunk.css",
-    "main.js": "/Asteria/static/js/main.118a1d2d.chunk.js",
-    "main.js.map": "/Asteria/static/js/main.118a1d2d.chunk.js.map",
+    "main.js": "/Asteria/static/js/main.527077a9.chunk.js",
+    "main.js.map": "/Asteria/static/js/main.527077a9.chunk.js.map",
     "runtime-main.js": "/Asteria/static/js/runtime-main.21b4b72c.js",
     "runtime-main.js.map": "/Asteria/static/js/runtime-main.21b4b72c.js.map",
-    "static/js/2.e9beab60.chunk.js": "/Asteria/static/js/2.e9beab60.chunk.js",
-    "static/js/2.e9beab60.chunk.js.map": "/Asteria/static/js/2.e9beab60.chunk.js.map",
+    "static/js/2.1fcb8427.chunk.js": "/Asteria/static/js/2.1fcb8427.chunk.js",
+    "static/js/2.1fcb8427.chunk.js.map": "/Asteria/static/js/2.1fcb8427.chunk.js.map",
     "index.html": "/Asteria/index.html",
-    "precache-manifest.92037c3e0d12a6e13852a9329fe5b6b1.js": "/Asteria/precache-manifest.92037c3e0d12a6e13852a9329fe5b6b1.js",
+    "precache-manifest.92d8e1999664a5b6e4b787a414d7c1d7.js": "/Asteria/precache-manifest.92d8e1999664a5b6e4b787a414d7c1d7.js",
     "service-worker.js": "/Asteria/service-worker.js",
-    "static/css/main.d1b05096.chunk.css.map": "/Asteria/static/css/main.d1b05096.chunk.css.map",
-    "static/js/2.e9beab60.chunk.js.LICENSE": "/Asteria/static/js/2.e9beab60.chunk.js.LICENSE",
-    "static/media/logo.svg": "/Asteria/static/media/logo.5d5d9eef.svg"
+    "static/js/2.1fcb8427.chunk.js.LICENSE": "/Asteria/static/js/2.1fcb8427.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.21b4b72c.js",
-    "static/js/2.e9beab60.chunk.js",
-    "static/css/main.d1b05096.chunk.css",
-    "static/js/main.118a1d2d.chunk.js"
+    "static/js/2.1fcb8427.chunk.js",
+    "static/js/main.527077a9.chunk.js"
   ]
 }
