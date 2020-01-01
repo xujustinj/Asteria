@@ -1,11 +1,22 @@
 import React, { Component } from 'react';
-import Table from './Table.js';
-import Form from './Form.js';
-import * as Diff from './diffable/diffable.js';
+import Table, { TableRow } from './Table';
+import Form from './Form';
+import * as Diff from './diffable/diffable';
 
-class App extends Component {
-    constructor() {
-        super();
+class App extends Component<{}> {
+    x: Diff.Variable;
+    m: Diff.Variable;
+    b: Diff.Variable;
+    e: Diff.Variable;
+    y: Diff.Softplus;
+    r: Diff.SquaredError;
+
+    expressions: Diff.Expression[];
+
+    state: { data: TableRow[]; input: number };
+
+    constructor(props: {}) {
+        super(props);
 
         this.x = new Diff.Variable('x', 0);
         this.m = new Diff.Variable('m', 1);
@@ -22,10 +33,10 @@ class App extends Component {
         this.r = new Diff.SquaredError(this.y, this.e);
         this.expressions[3] = this.r;
 
-        this.state = { data: [{ m: 1, b: 0, r: "" }], input: 0 };
+        this.state = { data: [{ m: 1, b: 0, r: NaN }], input: 0 };
     }
 
-    train(samples, sensitivity) {
+    train(samples: number, sensitivity: number) {
         if (!isFinite(samples)) { return; }
         if (!isFinite(sensitivity)) { return; }
         if (samples <= 0) { return; }
@@ -36,27 +47,29 @@ class App extends Component {
         this.m.bind(m);
         this.b.bind(b);
 
-        let sumM = 0;
-        let sumB = 0;
-        let sumR = 0;
+        let sumM: number = 0, sumB: number = 0, sumR: number = 0;
         for (let i = 0; i < samples; ++i) {
-            this.x.bind(Math.random());
-            sumM += this.r.deriv('m');
-            sumB += this.r.deriv('b');
-            sumR += this.r.value();
-
             this.expressions.forEach((expr) => { expr.reset(); });
+            this.x.bind(Math.random());
+
+            sumM += this.r.deriv(this.m);
+            sumB += this.r.deriv(this.b);
+            sumR += this.r.value();
         }
 
         m -= sumM * sensitivity / samples;
         b -= sumB * sensitivity / samples;
 
         data[data.length - 1].r = Math.sqrt(sumR / samples);
-        data.push({ m: m, b: b, r: "" });
+        data.push({ m: m, b: b, r: NaN });
         this.setState({ data: data });
     }
 
-    handleChange = event => {
+    reset() {
+        this.expressions.forEach((expr) => { expr.reset(); });
+    }
+
+    handleChange(event: { target: { name: any; value: any }; }) {
         const { name, value } = event.target;
 
         this.setState({ [name]: value });
@@ -71,7 +84,7 @@ class App extends Component {
 
         let { input } = this.state;
 
-        let output = "";
+        let output: number = NaN;
         if (isFinite(input)) {
             this.x.bind(input);
             output = this.y.value();
@@ -108,9 +121,9 @@ class App extends Component {
                     value={output} />
 
                 <h2>Training</h2>
-                <Form handleSubmit={(state) => {
-                    this.train(state.samples, state.sensitivity);
-                }} />
+                <Form handleSubmit={
+                    (state) => { this.train(state.samples, state.sensitivity); }
+                } />
                 <Table data={data} />
             </div>
         );

@@ -1,20 +1,28 @@
 import React, { Component } from 'react';
 
-class Form extends Component {
-    constructor(props) {
+export type FormProps = {
+    handleSubmit: (state: { samples: number; sensitivity: number; }) => void;
+}
+
+class Form extends Component<FormProps> {
+    state: { samples: number; sensitivity: number; };
+    handleSubmit: (state: { samples: number; sensitivity: number; }) => void;
+
+    constructor(props: FormProps) {
         super(props);
 
-        this.state = { samples: "", sensitivity: "" };
+        this.state = { samples: NaN, sensitivity: NaN };
+        this.handleSubmit = (props as any).handleSubmit;
     }
 
-    handleChange = event => {
+    handleChange = (event: { target: { name: any; value: any; }; }) => {
         const { name, value } = event.target;
 
         this.setState({ [name]: value });
     }
 
     submitForm = () => {
-        this.props.handleSubmit(this.state)
+        (this.props as any).handleSubmit(this.state)
     }
 
     render() {
@@ -22,7 +30,7 @@ class Form extends Component {
 
         return (
             <form>
-                <label> Samples </label>
+                <label>Samples</label>
                 <input
                     type="number"
                     name="samples"
@@ -30,7 +38,7 @@ class Form extends Component {
                     min="1"
                     onChange={this.handleChange} />
                 <br />
-                <label> Sensitivity </label>
+                <label>Sensitivity</label>
                 <input
                     type="number"
                     name="sensitivity"

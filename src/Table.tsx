@@ -1,6 +1,12 @@
 import React from 'react';
 
-function TableHeader() {
+export type TableRow = {
+    m: number;
+    b: number;
+    r: number;
+}
+
+function TableHeader(): JSX.Element {
     return (
         <thead>
             <tr>
@@ -13,22 +19,23 @@ function TableHeader() {
     );
 }
 
-function TableBody(props) {
+function TableBody(props: { data: TableRow[] }): JSX.Element {
     return (
-        <tbody>{props.data.map((row, index) => {
+        <tbody>{props.data.map((row: TableRow, index: number) => {
+            let { m, b, r } = row;
             return (
                 <tr key={index}>
                     <td>{index}</td>
-                    <td>{row.m}</td>
-                    <td>{row.b}</td>
-                    <td>{row.r}</td>
+                    <td>{isFinite(m) ? m : ""}</td>
+                    <td>{isFinite(b) ? b : ""}</td>
+                    <td>{isFinite(r) ? r : ""}</td>
                 </tr>
             )
         })}</tbody>
     );
 }
 
-function Table(props) {
+function Table(props: { data: TableRow[] }) {
     const { data } = props;
 
     return (
