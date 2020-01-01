@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Table, { TableRow } from './Table';
-import Form from './Form';
+import Form, { FormState } from './Form';
 import * as Diff from './diffable/diffable';
 
 class App extends Component<{}> {
@@ -49,7 +49,7 @@ class App extends Component<{}> {
 
         let sumM: number = 0, sumB: number = 0, sumR: number = 0;
         for (let i = 0; i < samples; ++i) {
-            this.expressions.forEach((expr) => { expr.reset(); });
+            this.reset();
             this.x.bind(Math.random());
 
             sumM += this.r.deriv(this.m);
@@ -69,28 +69,29 @@ class App extends Component<{}> {
         this.expressions.forEach((expr) => { expr.reset(); });
     }
 
-    handleChange(event: { target: { name: any; value: any }; }) {
+    handleChange = (event: { target: { name: any; value: any }; }) => {
         const { name, value } = event.target;
-
         this.setState({ [name]: value });
-    }
+    };
+
+    handleSubmit = (state: FormState) => {
+        for (let i: number = 0; i < state.generations; ++i) {
+            this.train(state.samples, state.sensitivity);
+        }
+    };
 
     render() {
-        let { data } = this.state;
-        let { m, b } = data[data.length - 1];
-
-        this.m.bind(m);
-        this.b.bind(b);
-
-        let { input } = this.state;
+        const { data, input } = this.state;
 
         let output: number = NaN;
         if (isFinite(input)) {
+            const { m, b } = data[data.length - 1];
+            this.reset();
+            this.m.bind(m);
+            this.b.bind(b);
             this.x.bind(input);
             output = this.y.value();
         }
-
-        this.expressions.forEach((expr) => { expr.reset(); });
 
         return (
             <div className="App">
@@ -103,7 +104,7 @@ class App extends Component<{}> {
                 <p>Asteria is the simplest possible neural network: a single input neuron linked to a single output neuron.<br />
                 She has no hidden layers, so Asteria is really just a linear relation passed through an activation function (softplus).<br />
                 The full equation for Asteria is y=ReLU(mx+b). Her initial state is y=ReLU(x), where m=1 and b=0.<br />
-                Asteria will be trained to minimize R^2, the mean of (y-42)^2 over randomly-sampled values of x ranging from 0 to 1.<br /></p>
+                Asteria will be trained to minimize R^2, the mean of (y-42)^2 over randomly-sampled values of x ranging from 0 to 1.</p>
 
                 <h2>Testing</h2>
                 <p>If she has learned well, Asteria should output 42 no matter what input we give her. Test it out here!</p>
@@ -121,9 +122,12 @@ class App extends Component<{}> {
                     value={output} />
 
                 <h2>Training</h2>
-                <Form handleSubmit={
-                    (state) => { this.train(state.samples, state.sensitivity); }
-                } />
+                <p>We want Asteria to ultimately settle on y=42~RELU(42), where m=0 and b=42.<br />
+                To determine how to adjust m and b, Asteria samples values of x between 0 to 1 (you decide how many) and does fancy backpropogation.<br />
+                Sensitivity determines the strength of the adjustments to m and b in each generation of Asteria.<br />
+                If sensitivity is negative, Asteria will try to maximize error instead of minimizing it.<br />
+                If sensitivity is too large (the upper bound is around 0.75), Asteria will overshoot on her adjustments and fail to settle anywhere.</p>
+                <Form handleSubmit={this.handleSubmit} />
                 <Table data={data} />
             </div>
         );

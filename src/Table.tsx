@@ -4,7 +4,7 @@ export type TableRow = {
     m: number;
     b: number;
     r: number;
-}
+};
 
 function TableHeader(): JSX.Element {
     return (
@@ -22,7 +22,7 @@ function TableHeader(): JSX.Element {
 function TableBody(props: { data: TableRow[] }): JSX.Element {
     return (
         <tbody>{props.data.map((row: TableRow, index: number) => {
-            let { m, b, r } = row;
+            const { m, b, r } = row;
             return (
                 <tr key={index}>
                     <td>{index}</td>
@@ -31,7 +31,7 @@ function TableBody(props: { data: TableRow[] }): JSX.Element {
                     <td>{isFinite(r) ? r : ""}</td>
                 </tr>
             )
-        })}</tbody>
+        }).reverse()}</tbody>
     );
 }
 

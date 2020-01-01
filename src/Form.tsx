@@ -1,17 +1,23 @@
 import React, { Component } from 'react';
 
+export type FormState = {
+    samples: number;
+    sensitivity: number;
+    generations: number;
+};
+
 export type FormProps = {
-    handleSubmit: (state: { samples: number; sensitivity: number; }) => void;
-}
+    handleSubmit: (state: FormState) => void;
+};
 
 class Form extends Component<FormProps> {
-    state: { samples: number; sensitivity: number; };
-    handleSubmit: (state: { samples: number; sensitivity: number; }) => void;
+    state: FormState;
+    handleSubmit: (state: FormState) => void;
 
     constructor(props: FormProps) {
         super(props);
 
-        this.state = { samples: NaN, sensitivity: NaN };
+        this.state = { samples: 1, sensitivity: 1, generations: 1 };
         this.handleSubmit = (props as any).handleSubmit;
     }
 
@@ -26,7 +32,7 @@ class Form extends Component<FormProps> {
     }
 
     render() {
-        const { samples, sensitivity } = this.state;
+        const { samples, sensitivity, generations } = this.state;
 
         return (
             <form>
@@ -34,7 +40,7 @@ class Form extends Component<FormProps> {
                 <input
                     type="number"
                     name="samples"
-                    value={samples}
+                    value={isFinite(samples) ? samples : ""}
                     min="1"
                     onChange={this.handleChange} />
                 <br />
@@ -42,10 +48,18 @@ class Form extends Component<FormProps> {
                 <input
                     type="number"
                     name="sensitivity"
-                    value={sensitivity}
+                    value={isFinite(sensitivity) ? sensitivity : ""}
                     onChange={this.handleChange} />
                 <br />
-                <input type="button" value="Submit" onClick={this.submitForm} />
+                <label>Generations</label>
+                <input
+                    type="number"
+                    name="generations"
+                    value={isFinite(generations) ? generations : ""}
+                    min="0"
+                    onChange={this.handleChange} />
+                <br />
+                <input type="button" value="Train" onClick={this.submitForm} />
             </form>
         );
     }
