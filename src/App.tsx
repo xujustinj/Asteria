@@ -96,7 +96,7 @@ class App extends Component<{}> {
                     value={output} />
 
                 <h2>Training</h2>
-                <p>We want Asteria to ultimately settle on y=42~RELU(42), where m=0 and b=42.<br />
+                <p>We want Asteria to ultimately settle on y=42~ReLU(42), where m=0 and b=42.<br />
                 To determine how to adjust m and b, Asteria samples values of x between 0 to 1 (you decide how many) and does fancy backpropogation.<br />
                 Sensitivity determines the strength of the adjustments to m and b in each generation of Asteria.<br />
                 If sensitivity is negative, Asteria will try to maximize error instead of minimizing it.<br />
