@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import Table, { TableRow } from './Table';
 import Form, { FormState } from './Form';
 import * as Diff from './diffable/diffable';
+import * as Neuro from './neuro/neuro';
 
 class App extends Component<{}> {
     x: Diff.Variable;
     m: Diff.Variable;
     b: Diff.Variable;
     e: Diff.Variable;
-    y: Diff.Softplus;
-    r: Diff.SquaredError;
+    y: Neuro.ActivationSoftplus;
+    r: Neuro.ErrorSquared;
 
     expressions: Diff.Expression[];
 
@@ -24,13 +25,13 @@ class App extends Component<{}> {
         this.e = new Diff.Variable("expect", 42);
 
         this.expressions = [];
-        this.expressions[0] = new Diff.BinaryProduct(this.m, this.x);
-        this.expressions[1] = new Diff.Sum(this.expressions[0], this.b);
+        this.expressions[0] = new Diff.BinProduct(this.m, this.x);
+        this.expressions[1] = new Diff.VarSum(this.expressions[0], this.b);
 
-        this.y = new Diff.Softplus(this.expressions[1]);
+        this.y = new Neuro.ActivationSoftplus(this.expressions[1]);
         this.expressions[2] = this.y;
 
-        this.r = new Diff.SquaredError(this.y, this.e);
+        this.r = new Neuro.ErrorSquared(this.y, this.e);
         this.expressions[3] = this.r;
 
         this.state = { data: [{ m: 1, b: 0, r: NaN }], input: 0 };

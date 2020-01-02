@@ -1,7 +1,10 @@
-import Differentiable from './core/variable';
-import Expression from './core/expression';
-import Variable from './core/variable';
-export { Differentiable, Expression, Variable };
-export { BinaryProduct, Sum } from './operation';
-export { SquaredError } from './error';
-export { Logistic, Softplus } from './activation';
+import Differentiable from './variable';
+import Expression, { ExprUnary, ExprBinary, ExprVariadic } from './expression';
+import Variable from './variable';
+
+export {
+    Differentiable,
+    Expression, ExprUnary, ExprBinary, ExprVariadic,
+    Variable
+};
+export { BinProduct, VarSum } from './operations';

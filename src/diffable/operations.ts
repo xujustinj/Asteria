@@ -1,17 +1,7 @@
-import Differentiable from './core/differentiable';
-import Expression from './core/expression';
-import Variable from './core/variable';
+import { ExprBinary, ExprVariadic } from './expression';
+import Variable from './variable';
 
-class BinaryProduct extends Expression {
-    left: Differentiable;
-    right: Differentiable;
-
-    constructor(left: Differentiable, right: Differentiable) {
-        super();
-        this.left = left;
-        this.right = right;
-    }
-
+class BinProduct extends ExprBinary {
     protected valueImpl(): number {
         return this.left.value() * this.right.value();
     }
@@ -27,14 +17,7 @@ class BinaryProduct extends Expression {
     }
 }
 
-class Sum extends Expression {
-    terms: Differentiable[];
-
-    constructor(...terms: Differentiable[]) {
-        super();
-        this.terms = terms;
-    }
-
+class VarSum extends ExprVariadic {
     protected valueImpl(): number {
         return this.terms.reduce((acc, term) => acc + term.value(), 0);
     }
@@ -48,4 +31,4 @@ class Sum extends Expression {
     }
 }
 
-export { BinaryProduct, Sum };
+export { BinProduct, VarSum };

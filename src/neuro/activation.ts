@@ -1,22 +1,14 @@
-import Differentiable from './core/differentiable'
-import Expression from './core/expression';
-import Variable from './core/variable';
+import { ExprUnary } from '../diffable/expression';
+import DVariable from '../diffable/variable';
 
-class Logistic extends Expression {
-    arg: Differentiable;
-
-    constructor(arg: Differentiable) {
-        super();
-        this.arg = arg;
-    }
-
+class ActivationLogistic extends ExprUnary {
     protected valueImpl(): number {
         let x = this.arg.value();
         let y = 1 / (1 + Math.exp(-x));
         return isFinite(y) ? y : ((x < 0) ? 0 : 1);
     }
 
-    protected derivImpl(v: Variable): number {
+    protected derivImpl(v: DVariable): number {
         let val = this.arg.value();
         let d = this.arg.deriv(v) / (Math.exp(val) + 2 + Math.exp(-val));
         return isFinite(d) ? d : 0;
@@ -27,21 +19,14 @@ class Logistic extends Expression {
     }
 }
 
-class Softplus extends Expression {
-    arg: Differentiable;
-
-    constructor(arg: Differentiable) {
-        super();
-        this.arg = arg;
-    }
-
+class ActivationSoftplus extends ExprUnary {
     protected valueImpl(): number {
         let x = this.arg.value();
         let y = 1 + Math.exp(x);
         return isFinite(y) ? Math.log(y) : x;
     }
 
-    protected derivImpl(v: Variable): number {
+    protected derivImpl(v: DVariable): number {
         let x = this.arg.value();
         let df = 1 / (1 + Math.exp(-x));
         df = isFinite(df) ? df : 0;
@@ -53,4 +38,4 @@ class Softplus extends Expression {
     }
 }
 
-export { Logistic, Softplus };
+export { ActivationLogistic, ActivationSoftplus };
