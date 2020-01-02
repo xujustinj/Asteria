@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Asteria/precache-manifest.f8e1d400b7c1d8ea4f6c5bff88fce0f0.js"
+  "/Asteria/precache-manifest.194e3a613e9e2a1e409b6460ea75ce34.js"
 );
 
 self.addEventListener('message', (event) => {
