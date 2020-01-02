@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/Asteria/static/js/main.4f8c1ca5.chunk.js",
-    "main.js.map": "/Asteria/static/js/main.4f8c1ca5.chunk.js.map",
+    "main.js": "/Asteria/static/js/main.e17d349f.chunk.js",
+    "main.js.map": "/Asteria/static/js/main.e17d349f.chunk.js.map",
     "runtime-main.js": "/Asteria/static/js/runtime-main.21b4b72c.js",
     "runtime-main.js.map": "/Asteria/static/js/runtime-main.21b4b72c.js.map",
     "static/js/2.21346cef.chunk.js": "/Asteria/static/js/2.21346cef.chunk.js",
     "static/js/2.21346cef.chunk.js.map": "/Asteria/static/js/2.21346cef.chunk.js.map",
     "index.html": "/Asteria/index.html",
-    "precache-manifest.c2b15c0ed77724fe81209a0a656ad92a.js": "/Asteria/precache-manifest.c2b15c0ed77724fe81209a0a656ad92a.js",
+    "precache-manifest.2fb401c62a53babca13e7f15fd753c27.js": "/Asteria/precache-manifest.2fb401c62a53babca13e7f15fd753c27.js",
     "service-worker.js": "/Asteria/service-worker.js",
     "static/js/2.21346cef.chunk.js.LICENSE": "/Asteria/static/js/2.21346cef.chunk.js.LICENSE"
   },
   "entrypoints": [
     "static/js/runtime-main.21b4b72c.js",
     "static/js/2.21346cef.chunk.js",
-    "static/js/main.4f8c1ca5.chunk.js"
+    "static/js/main.e17d349f.chunk.js"
   ]
 }
