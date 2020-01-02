@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
 export type FormState = {
     samples: number;
@@ -16,14 +16,12 @@ class Form extends Component<FormProps> {
 
     constructor(props: FormProps) {
         super(props);
-
         this.state = { samples: 1, sensitivity: 1, generations: 1 };
         this.handleSubmit = (props as any).handleSubmit;
     }
 
     handleChange = (event: { target: { name: any; value: any; }; }) => {
         const { name, value } = event.target;
-
         this.setState({ [name]: value });
     }
 
@@ -33,7 +31,6 @@ class Form extends Component<FormProps> {
 
     render() {
         const { samples, sensitivity, generations } = this.state;
-
         return (
             <form>
                 <label>Samples</label>

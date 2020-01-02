@@ -1,38 +1,25 @@
-import React, { Component } from 'react';
-import Table, { TableRow } from './Table';
-import Form, { FormState } from './Form';
-import * as Diff from './diffable/diffable';
-import * as Neuro from './neuro/neuro';
+import React, { Component } from "react";
+import Table, { TableRow } from "./Table";
+import Form, { FormState } from "./Form";
+import * as Neuro from "./neuro/neuro";
 
 class App extends Component<{}> {
-    x: Diff.Variable;
-    m: Diff.Variable;
-    b: Diff.Variable;
-    e: Diff.Variable;
-    y: Neuro.ActivationSoftplus;
-    r: Neuro.ErrorSquared;
-
-    expressions: Diff.Expression[];
+    in: Neuro.InputNeuron;
+    out: Neuro.OutputNeuron;
 
     state: { data: TableRow[]; input: number };
 
     constructor(props: {}) {
         super(props);
 
-        this.x = new Diff.Variable('x', 0);
-        this.m = new Diff.Variable('m', 1);
-        this.b = new Diff.Variable('b', 0);
-        this.e = new Diff.Variable("expect", 42);
-
-        this.expressions = [];
-        this.expressions[0] = new Diff.BinProduct(this.m, this.x);
-        this.expressions[1] = new Diff.VarSum(this.expressions[0], this.b);
-
-        this.y = new Neuro.ActivationSoftplus(this.expressions[1]);
-        this.expressions[2] = this.y;
-
-        this.r = new Neuro.ErrorSquared(this.y, this.e);
-        this.expressions[3] = this.r;
+        this.in = new Neuro.InputNeuron('x');
+        this.out = new Neuro.OutputNeuron(
+            'y',
+            Neuro.ActivationSoftplus,
+            Neuro.ErrorSquared,
+            this.in
+        );
+        this.out.bind(42);
 
         this.state = { data: [{ m: 1, b: 0, r: NaN }], input: 0 };
     }
@@ -42,32 +29,21 @@ class App extends Component<{}> {
         if (!isFinite(sensitivity)) { return; }
         if (samples <= 0) { return; }
 
-        let { data } = this.state;
-        let { m, b } = data[data.length - 1];
-
-        this.m.bind(m);
-        this.b.bind(b);
-
-        let sumM: number = 0, sumB: number = 0, sumR: number = 0;
+        let rsq = 0;
         for (let i = 0; i < samples; ++i) {
-            this.reset();
-            this.x.bind(Math.random());
-
-            sumM += this.r.deriv(this.m);
-            sumB += this.r.deriv(this.b);
-            sumR += this.r.value();
+            this.out.reset();
+            this.in.bind(Math.random());
+            this.out.study(this.out.getErr());
+            rsq += this.out.valueErr();
         }
+        this.out.learn(sensitivity);
 
-        m -= sumM * sensitivity / samples;
-        b -= sumB * sensitivity / samples;
-
-        data[data.length - 1].r = Math.sqrt(sumR / samples);
+        let { data } = this.state;
+        const m = this.out.weights[0].value();
+        const b = this.out.bias.value();
+        data[data.length - 1].r = Math.sqrt(rsq / samples);
         data.push({ m: m, b: b, r: NaN });
         this.setState({ data: data });
-    }
-
-    reset() {
-        this.expressions.forEach((expr) => { expr.reset(); });
     }
 
     handleChange = (event: { target: { name: any; value: any }; }) => {
@@ -86,12 +62,9 @@ class App extends Component<{}> {
 
         let output: number = NaN;
         if (isFinite(input)) {
-            const { m, b } = data[data.length - 1];
-            this.reset();
-            this.m.bind(m);
-            this.b.bind(b);
-            this.x.bind(input);
-            output = this.y.value();
+            this.out.reset();
+            this.in.bind(input);
+            output = this.out.value();
         }
 
         return (

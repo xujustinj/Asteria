@@ -1,10 +1,10 @@
-import Differentiable from './differentiable';
+import Differentiable from "./differentiable";
 
 class Variable implements Differentiable {
-    name: string;
-    val: number;
+    private name: string;
+    private val: number;
 
-    constructor(name: string, val: number) {
+    constructor(name: string, val: number = 0) {
         this.name = name;
         this.val = val;
     }

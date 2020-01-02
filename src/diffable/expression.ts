@@ -1,5 +1,5 @@
-import Differentiable from './differentiable';
-import Variable from './variable';
+import Differentiable from "./differentiable";
+import Variable from "./variable";
 
 abstract class Expression implements Differentiable {
     private _value: number = NaN;
@@ -29,7 +29,7 @@ abstract class Expression implements Differentiable {
 }
 
 abstract class ExprUnary extends Expression {
-    arg: Differentiable;
+    protected arg: Differentiable;
 
     constructor(arg: Differentiable) {
         super();
@@ -38,8 +38,8 @@ abstract class ExprUnary extends Expression {
 }
 
 abstract class ExprBinary extends Expression {
-    left: Differentiable;
-    right: Differentiable;
+    protected left: Differentiable;
+    protected right: Differentiable;
 
     constructor(left: Differentiable, right: Differentiable) {
         super();
@@ -49,7 +49,7 @@ abstract class ExprBinary extends Expression {
 }
 
 abstract class ExprVariadic extends Expression {
-    terms: Differentiable[];
+    protected terms: Differentiable[];
 
     constructor(...terms: Differentiable[]) {
         super();

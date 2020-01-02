@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export type TableRow = {
     m: number;
@@ -37,7 +37,6 @@ function TableBody(props: { data: TableRow[] }): JSX.Element {
 
 function Table(props: { data: TableRow[] }) {
     const { data } = props;
-
     return (
         <table>
             <TableHeader />
