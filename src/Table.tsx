@@ -1,9 +1,9 @@
 import React from "react";
 
 export type TableRow = {
-    m: number;
-    b: number;
-    r: number;
+    m: number | undefined;
+    b: number | undefined;
+    r: number | undefined;
 };
 
 function TableHeader(): JSX.Element {
@@ -26,9 +26,9 @@ function TableBody(props: { data: TableRow[] }): JSX.Element {
             return (
                 <tr key={index}>
                     <td>{index}</td>
-                    <td>{isFinite(m) ? m : ""}</td>
-                    <td>{isFinite(b) ? b : ""}</td>
-                    <td>{isFinite(r) ? r : ""}</td>
+                    <td>{m ?? ""}</td>
+                    <td>{b ?? ""}</td>
+                    <td>{r ?? ""}</td>
                 </tr>
             )
         }).reverse()}</tbody>

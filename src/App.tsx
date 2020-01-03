@@ -3,25 +3,28 @@ import Table, { TableRow } from "./Table";
 import Form, { FormState } from "./Form";
 import * as Neuro from "./neuro/neuro";
 
+const x: string = 'x';
+const y: string = 'y';
+
 class App extends Component<{}> {
-    in: Neuro.InputNeuron;
-    out: Neuro.OutputNeuron;
+    in: Neuro.InputLayer;
+    out: Neuro.OutputLayer;
 
     state: { data: TableRow[]; input: number };
 
     constructor(props: {}) {
         super(props);
 
-        this.in = new Neuro.InputNeuron('x');
-        this.out = new Neuro.OutputNeuron(
-            'y',
+        this.in = new Neuro.InputLayer(x);
+        this.out = new Neuro.OutputLayer(
+            this.in,
             Neuro.ActivationSoftplus,
             Neuro.ErrorSquared,
-            this.in
+            y
         );
-        this.out.bind(42);
+        this.out.bind(new Map([[y, 42]]));
 
-        this.state = { data: [{ m: 1, b: 0, r: NaN }], input: 0 };
+        this.state = { data: [{ m: 1, b: 0, r: undefined }], input: 0 };
     }
 
     train(samples: number, sensitivity: number) {
@@ -32,17 +35,17 @@ class App extends Component<{}> {
         let rsq = 0;
         for (let i = 0; i < samples; ++i) {
             this.out.reset();
-            this.in.bind(Math.random());
+            this.in.bind(new Map([[x, Math.random()]]));
             this.out.study(this.out.getErr());
             rsq += this.out.valueErr();
         }
         this.out.learn(sensitivity);
 
         let { data } = this.state;
-        const m = this.out.weights[0].value();
-        const b = this.out.bias.value();
+        const m = this.out.getWeight(y, 0)!.value();
+        const b = this.out.getBias(y)!.value();
         data[data.length - 1].r = Math.sqrt(rsq / samples);
-        data.push({ m: m, b: b, r: NaN });
+        data.push({ m: m, b: b, r: undefined });
         this.setState({ data: data });
     }
 
@@ -63,8 +66,8 @@ class App extends Component<{}> {
         let output: number = NaN;
         if (isFinite(input)) {
             this.out.reset();
-            this.in.bind(input);
-            output = this.out.value();
+            this.in.bind(new Map([[x, input]]));
+            output = this.out.getNeuron(y)!.value();
         }
 
         return (
@@ -97,7 +100,7 @@ class App extends Component<{}> {
 
                 <h2>Training</h2>
                 <p>We want Asteria to ultimately settle on y=42~ReLU(42), where m=0 and b=42.<br />
-                To determine how to adjust m and b, Asteria samples values of x between 0 to 1 (you decide how many) and does fancy backpropogation.<br />
+                To determine how to adjust m and b, Asteria samples values of x between 0 to 1 (you decide how many) and does fancy backpropagation.<br />
                 Sensitivity determines the strength of the adjustments to m and b in each generation of Asteria.<br />
                 If sensitivity is negative, Asteria will try to maximize error instead of minimizing it.<br />
                 If sensitivity is too large (the upper bound is around 0.75), Asteria will overshoot on her adjustments and fail to settle anywhere.</p>

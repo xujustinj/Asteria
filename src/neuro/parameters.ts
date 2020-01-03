@@ -9,9 +9,11 @@ abstract class Parameter implements Trainable {
         this.adjustments = [];
     }
 
-    abstract value(): number;
-    abstract get(): Differentiable;
-    abstract print(): string;
+    abstract get(): Variable;
+    value(): number { return this.get().value(); }
+    print(): string { return this.get().print(); }
+
+    abstract getExpr(): Differentiable;
 
     study(error: Differentiable) {
         this.adjustments.push(-this.studyImpl(error));
@@ -43,9 +45,8 @@ class Weight extends Parameter {
         ++Weight.count;
     }
 
-    value(): number { return this.w.value(); }
-    get(): Differentiable { return this.t; }
-    print(): string { return this.w.print(); }
+    get(): Variable { return this.w; }
+    getExpr(): Differentiable { return this.t; }
 
     protected studyImpl(error: Differentiable): number {
         return error.deriv(this.w);
@@ -70,9 +71,8 @@ class Bias extends Parameter {
         ++Bias.count;
     }
 
-    value(): number { return this.b.value(); }
-    get(): Differentiable { return this.b; }
-    print(): string { return this.b.print(); }
+    get(): Variable { return this.b; }
+    getExpr(): Differentiable { return this.get(); }
 
     protected studyImpl(error: Differentiable): number {
         return error.deriv(this.b);

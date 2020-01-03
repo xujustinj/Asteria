@@ -1,4 +1,4 @@
-import { ExprUnary, Variable } from "../diffable/diffable";
+import { Differentiable, ExprUnary, Variable } from "../diffable/diffable";
 
 class ActivationLogistic extends ExprUnary {
     protected valueImpl(): number {
@@ -37,4 +37,7 @@ class ActivationSoftplus extends ExprUnary {
     }
 }
 
+export interface ActivationClass {
+    new(arg: Differentiable): ExprUnary;
+}
 export { ActivationLogistic, ActivationSoftplus };
