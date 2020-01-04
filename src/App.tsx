@@ -12,11 +12,11 @@ function App() {
       <Router>
         <div>
           <nav>
-            <Link to="/"><h1>Asteria42</h1></Link>
+            <Link to="/Asteria/Asteria42"><h1>Asteria42</h1></Link>
 					</nav>
 				</div>
         <Switch>
-          <Route path="/">
+          <Route path="/Asteria/Asteria42">
             <Asteria42 />
           </Route>
         </Switch>
