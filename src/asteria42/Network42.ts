@@ -1,16 +1,17 @@
 import * as Neuro from "../neuro/neuro";
 
 class Network42 extends Neuro.Network {
-    source() {
+    protected source() {
         return {
             input: new Map<string, number>([['x', Math.random()]]),
             output: new Map<string, number>([['y', 42]])
         };
     }
+    protected Act() { return Neuro.ActivationSoftplus; }
+    protected Err() { return Neuro.ErrorSquared; }
+    protected hiddenSizes() { return []; }
 
-    constructor() {
-        super(Neuro.ActivationSoftplus, Neuro.ErrorSquared);
-    }
+    // Convenience Methods
 
     m(): number {
         return this.getOutputLayer().getWeight('y', 0)!.value();

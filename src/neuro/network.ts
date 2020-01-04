@@ -11,10 +11,11 @@ abstract class Network {
     private outputLayer: OutputLayer;
 
     protected abstract source(): Sample;
+    protected abstract Act(): ActivationClass;
+    protected abstract Err(): ErrorClass;
+    protected abstract hiddenSizes(): number[];
 
-    constructor(
-        Act: ActivationClass, Err: ErrorClass, ...hiddenSizes: number[]
-    ) {
+    constructor() {
         const { input, output } = this.source();
         const inputNames = Array.from(input.keys());
         const outputNames = Array.from(output.keys());
@@ -22,11 +23,16 @@ abstract class Network {
         this.inputLayer = new InputLayer(...inputNames);
         this.hiddenLayers = [];
         let last: Layer = this.inputLayer;
-        for (const size of hiddenSizes) {
-            this.hiddenLayers.push(new HiddenLayer(last, Act, size));
+        for (const size of this.hiddenSizes()) {
+            this.hiddenLayers.push(new HiddenLayer(last, this.Act(), size));
             last = this.hiddenLayers[this.hiddenLayers.length - 1];
         }
-        this.outputLayer = new OutputLayer(last, Act, Err, ...outputNames);
+        this.outputLayer = new OutputLayer(
+            last,
+            this.Act(),
+            this.Err(),
+            ...outputNames
+        );
     }
 
     getInputLayer(): InputLayer { return this.inputLayer; }
