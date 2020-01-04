@@ -33,6 +33,14 @@ class InputLayer extends Layer {
         return this.neurons.get(name);
     }
 
+    values(): Map<string, number> {
+        let map = new Map<string, number>();
+        for (const [name, node] of this.neurons) {
+            map.set(name, node.value());
+        }
+        return map;
+    }
+
     bind(vals: Map<string, number>) {
         for (const [name, neuron] of this.neurons) {
             neuron.bind(vals.get(name) ?? 0);
@@ -58,11 +66,11 @@ abstract class TrainableLayer extends Layer implements Trainable {
 class HiddenLayer extends TrainableLayer {
     private neurons: TrainableNeuron[];
 
-    constructor(parent: Layer, Activation: ActivationClass, size: number) {
+    constructor(parent: Layer, Act: ActivationClass, size: number) {
         super();
         this.neurons = [];
         for (let i = 0; i < size; ++i) {
-            this.neurons.push(new HiddenNeuron(Activation, ...parent.get()))
+            this.neurons.push(new HiddenNeuron(Act, ...parent.get()))
         }
     }
 
@@ -70,6 +78,15 @@ class HiddenLayer extends TrainableLayer {
     getNeuron(index: number): Neuron {
         return this.neurons[index];
     }
+
+    getWeight(childIndex: number, parentIndex: number): Weight {
+        return this.neurons[childIndex].getWeight(parentIndex);
+    }
+    getBias(childIndex: number): Bias {
+        return this.neurons[childIndex].getBias();
+    }
+
+    values(): number[] { return this.neurons.map((n) => n.value())};
 }
 
 class OutputLayer extends TrainableLayer {
@@ -78,8 +95,8 @@ class OutputLayer extends TrainableLayer {
 
     constructor(
         parent: Layer,
-        Activation: ActivationClass,
-        Error: ErrorClass,
+        Act: ActivationClass,
+        Err: ErrorClass,
         ...names: string[]
     ) {
         super();
@@ -87,7 +104,7 @@ class OutputLayer extends TrainableLayer {
         for (const name of names) {
             this.neurons.set(
                 name,
-                new OutputNeuron(name, Activation, Error, ...parent.get())
+                new OutputNeuron(name, Act, Err, ...parent.get())
             );
         }
         this.err = new VarSum(
@@ -110,6 +127,14 @@ class OutputLayer extends TrainableLayer {
     getErr(): Differentiable { return this.err; }
     valueErr(): number { return this.getErr().value(); }
     printErr(): string { return this.getErr().print(); }
+
+    values(): Map<string, number> {
+        let map = new Map<string, number>();
+        for (const [name, node] of this.neurons) {
+            map.set(name, node.value());
+        }
+        return map;
+    }
 
     bind(vals: Map<string, number>) {
         for (const [name, neuron] of this.neurons) {

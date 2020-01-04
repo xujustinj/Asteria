@@ -34,14 +34,14 @@ abstract class TrainableNeuron extends Neuron implements Trainable {
     private sum: VarSum;
     private exp: ExprUnary;
 
-    constructor(Activation: ActivationClass, ...neurons: Neuron[]) {
+    constructor(Act: ActivationClass, ...neurons: Neuron[]) {
         super();
         this.weights = neurons.map((p) => new Weight(p));
         this.bias = new Bias();
 
         const terms = this.weights.map((c) => c.getExpr());
         this.sum = new VarSum(...terms, this.bias.getExpr());
-        this.exp = new Activation(this.sum);
+        this.exp = new Act(this.sum);
     }
 
     get(): Differentiable { return this.exp; }
@@ -72,13 +72,13 @@ class OutputNeuron extends TrainableNeuron {
 
     constructor(
         name: string,
-        Activation: ActivationClass,
-        Error: ErrorClass,
+        Act: ActivationClass,
+        Err: ErrorClass,
         ...neurons: Neuron[]
     ) {
-        super(Activation, ...neurons);
+        super(Act, ...neurons);
         this.y = new Variable(name);
-        this.err = new Error(this.get(), this.y);
+        this.err = new Err(this.get(), this.y);
     }
 
     getErr(): Differentiable { return this.err; }
