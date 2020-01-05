@@ -1,16 +1,23 @@
 import { Differentiable, ExprUnary, Variable } from "../diffable/diffable";
 
+// Vanishing gradient countermeasures
+function positive(x: number): number {
+    return (isFinite(x) && x > 0) ? x : Number.MIN_VALUE;
+}
+function product(x: number, y: number): number {
+    const xy = x * y;
+    return (xy === 0) ? (Math.sign(x) * Math.sign(y) * Number.MIN_VALUE) : xy;
+}
+
 class ActivationLogistic extends ExprUnary {
     protected valueImpl(): number {
-        let x = this.arg.value();
-        let y = 1 / (1 + Math.exp(-x));
-        return isFinite(y) ? y : ((x < 0) ? 0 : 1);
+        return positive(1 / (1 + Math.exp(-this.arg.value())));
     }
 
     protected derivImpl(v: Variable): number {
-        let val = this.arg.value();
-        let d = this.arg.deriv(v) / (Math.exp(val) + 2 + Math.exp(-val));
-        return isFinite(d) ? d : 0;
+        const val = this.arg.value();
+        const d = positive(1 / (Math.exp(val) + 2 + Math.exp(-val)));
+        return product(this.arg.deriv(v), d);
     }
 
     print(): string {
@@ -20,16 +27,14 @@ class ActivationLogistic extends ExprUnary {
 
 class ActivationSoftplus extends ExprUnary {
     protected valueImpl(): number {
-        let x = this.arg.value();
-        let y = 1 + Math.exp(x);
+        const x = this.arg.value();
+        const y = 1 + Math.exp(x);
         return isFinite(y) ? Math.log(y) : x;
     }
 
     protected derivImpl(v: Variable): number {
-        let x = this.arg.value();
-        let df = 1 / (1 + Math.exp(-x));
-        df = isFinite(df) ? df : 0;
-        return df * this.arg.deriv(v);
+        const d = positive(1 / (1 + Math.exp(-this.arg.value())));
+        return product(this.arg.deriv(v), d);
     }
 
     print(): string {

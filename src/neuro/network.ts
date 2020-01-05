@@ -38,7 +38,10 @@ abstract class Network {
     getInputLayer(): InputLayer { return this.inputLayer; }
     getHiddenLayer(i: number): HiddenLayer { return this.hiddenLayers[i]; }
     getOutputLayer(): OutputLayer { return this.outputLayer; }
+
     getErr(): Differentiable { return this.outputLayer.getErr(); }
+    valueErr(): number { return this.outputLayer.valueErr(); }
+    printErr(): string { return this.outputLayer.printErr(); }
 
     getOutput(input: Map<string, number>): Map<string, number> {
         this.reset();

@@ -19,9 +19,7 @@ class Network42 extends Neuro.Network {
     b(): number {
         return this.getOutputLayer().getBias('y')!.value();
     }
-    rsq(): number {
-        return this.getErr().value();
-    }
+
     value(x: number): number {
         return this.getOutput(new Map<string, number>([['x', x]])).get('y')!;
     }

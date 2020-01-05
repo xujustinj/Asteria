@@ -15,8 +15,8 @@ abstract class Parameter implements Trainable {
 
     abstract getExpr(): Differentiable;
 
-    study(error: Differentiable) {
-        this.adjustments.push(-this.studyImpl(error));
+    study(err: Differentiable) {
+        this.adjustments.push(-this.studyImpl(err));
     }
     protected abstract studyImpl(error: Differentiable): number;
 
@@ -40,7 +40,8 @@ class Weight extends Parameter {
 
     constructor(n: Neuron) {
         super();
-        this.w = new Variable("w" + Weight.count, 1);
+        const rand = Math.random() - Math.random();
+        this.w = new Variable("w" + Weight.count, rand);
         this.t = new BinProduct(this.w, n.get());
         ++Weight.count;
     }
@@ -48,8 +49,8 @@ class Weight extends Parameter {
     get(): Variable { return this.w; }
     getExpr(): Differentiable { return this.t; }
 
-    protected studyImpl(error: Differentiable): number {
-        return error.deriv(this.w);
+    protected studyImpl(err: Differentiable): number {
+        return err.deriv(this.w);
     }
     protected learnImpl(adjustment: number) {
         this.w.bind(this.value() + adjustment);

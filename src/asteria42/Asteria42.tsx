@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Table, { TableRow } from "./Table";
-import Form, { FormState } from "./Form";
+import Form, { FormState } from "../Form";
 import Network42 from "./Network42";
 
 class Asteria42 extends Component<{}> {
@@ -12,14 +12,17 @@ class Asteria42 extends Component<{}> {
         super(props);
 
         this.net = new Network42();
-        this.state = { data: [{ m: 1, b: 0, r: undefined }], input: 0 };
+        this.state = {
+            data: [{ m: this.net.m(), b: this.net.b(), r: undefined }],
+            input: 0,
+        };
     }
 
     train(samples: number, sensitivity: number) {
         let rsq = 0;
         for (let i = 0; i < samples; ++i) {
             this.net.study();
-            rsq += this.net.rsq();
+            rsq += this.net.valueErr();
         }
         let { data } = this.state;
         data[data.length - 1].r = Math.sqrt(rsq / samples);
@@ -53,7 +56,7 @@ class Asteria42 extends Component<{}> {
             <p>Asteria wants to learn the answer to life, the universe, and everything, but she needs your help!<br />
             Asteria is the simplest possible neural network: a single input neuron linked to a single output neuron.<br />
             She has no hidden layers, so Asteria is really just a linear relation passed through an activation function (softplus).<br />
-            The full equation for Asteria is y=ReLU(mx+b). Her initial state is y=ReLU(x), where m=1 and b=0.<br />
+            The full equation for Asteria is y=ReLU(mx+b). Her initial state is y=ReLU(mx), where m ranges randomly between -1 and 1.<br />
             Asteria will be trained to minimize R^2, the mean of (y-42)^2 over randomly-sampled values of x ranging from 0 to 1.</p>
 
             <h2>Testing</h2>
