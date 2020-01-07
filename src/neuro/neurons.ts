@@ -12,7 +12,7 @@ import { ErrorClass } from "./error";
 abstract class Neuron {
     abstract get(): Differentiable;
     value(): number { return this.get().value(); }
-    print(): string { return this.get().print(); }
+    abstract print(): string;
 }
 
 class InputNeuron extends Neuron {
@@ -24,6 +24,7 @@ class InputNeuron extends Neuron {
     }
 
     get(): Differentiable { return this.x; }
+    print(): string { return this.x.print(); }
 
     bind(val: number) { this.x.bind(val); }
 }
@@ -45,6 +46,12 @@ abstract class TrainableNeuron extends Neuron implements Trainable {
     }
 
     get(): Differentiable { return this.exp; }
+    print(): string {
+        return "[" + this.weights.map(
+            (w) => w.value()
+        ).join(" ") + "] " + this.bias.value();
+    }
+
     getWeight(parentIndex: number): Weight { return this.weights[parentIndex]; }
     getBias(): Bias { return this.bias; }
 
@@ -52,9 +59,9 @@ abstract class TrainableNeuron extends Neuron implements Trainable {
         this.weights.forEach((w) => w.study(error));
         this.bias.study(error);
     }
-    learn(sensitivity: number) {
-        this.weights.forEach((w) => w.learn(sensitivity));
-        this.bias.learn(sensitivity);
+    learn(sensitivity: number, friction: number) {
+        this.weights.forEach((w) => w.learn(sensitivity, friction));
+        this.bias.learn(sensitivity, friction);
     }
 
     reset() {

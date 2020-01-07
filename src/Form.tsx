@@ -3,6 +3,7 @@ import React, { Component } from "react";
 export type FormState = {
     samples: number;
     sensitivity: number;
+    friction: number;
     generations: number;
 };
 
@@ -16,7 +17,12 @@ class Form extends Component<FormProps> {
 
     constructor(props: FormProps) {
         super(props);
-        this.state = { samples: 1, sensitivity: 1, generations: 1 };
+        this.state = {
+            samples: 1,
+            sensitivity: 1,
+            friction: 1,
+            generations: 1,
+        };
         this.handleSubmit = (props as any).handleSubmit;
     }
 
@@ -30,7 +36,7 @@ class Form extends Component<FormProps> {
     }
 
     render() {
-        const { samples, sensitivity, generations } = this.state;
+        const { samples, sensitivity, friction, generations, } = this.state;
         return (
           <form>
             <label>Samples</label>
@@ -47,6 +53,14 @@ class Form extends Component<FormProps> {
               type="number"
               name="sensitivity"
               value={isFinite(sensitivity) ? sensitivity : ""}
+              onChange={this.handleChange} />
+            <br />
+
+            <label>Friction</label>
+            <input
+              type="number"
+              name="friction"
+              value={isFinite(friction) ? friction : ""}
               onChange={this.handleChange} />
             <br />
 

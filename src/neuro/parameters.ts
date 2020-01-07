@@ -4,9 +4,11 @@ import Neuron from "./neurons";
 
 abstract class Parameter implements Trainable {
     private adjustments: number[];
+    private velocity: number;
 
     constructor() {
         this.adjustments = [];
+        this.velocity = 0;
     }
 
     abstract get(): Variable;
@@ -20,12 +22,13 @@ abstract class Parameter implements Trainable {
     }
     protected abstract studyImpl(error: Differentiable): number;
 
-    learn(sensitivity: number) {
+    learn(sensitivity: number, friction: number) {
         if (this.adjustments.length > 0) {
             const adjustment = this.adjustments.reduce(
                 (acc, t) => acc + t, 0
             ) * sensitivity / this.adjustments.length;
-            this.learnImpl(adjustment);
+            this.velocity = this.velocity * (1 - friction) + adjustment;
+            this.learnImpl(this.velocity);
             this.adjustments = [];
         }
     }

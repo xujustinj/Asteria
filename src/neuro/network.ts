@@ -35,6 +35,12 @@ abstract class Network {
         );
     }
 
+    print(): string {
+        return this.hiddenLayers.map(
+            (n) => n.print()
+        ).join("\n") + "\n" + this.outputLayer.print();
+    }
+
     getInputLayer(): InputLayer { return this.inputLayer; }
     getHiddenLayer(i: number): HiddenLayer { return this.hiddenLayers[i]; }
     getOutputLayer(): OutputLayer { return this.outputLayer; }
@@ -58,9 +64,11 @@ abstract class Network {
         this.hiddenLayers.forEach((layer) => layer.study(err));
         this.outputLayer.study(err);
     }
-    learn(sensitivity: number) {
-        this.hiddenLayers.forEach((layer) => layer.learn(sensitivity));
-        this.outputLayer.learn(sensitivity);
+    learn(sensitivity: number, friction: number) {
+        this.hiddenLayers.forEach(
+            (layer) => layer.learn(sensitivity, friction)
+        );
+        this.outputLayer.learn(sensitivity, friction);
     }
 
     reset() {

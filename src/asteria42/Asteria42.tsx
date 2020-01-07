@@ -18,7 +18,7 @@ class Asteria42 extends Component<{}> {
         };
     }
 
-    train(samples: number, sensitivity: number) {
+    train(samples: number, sensitivity: number, friction: number) {
         let rsq = 0;
         for (let i = 0; i < samples; ++i) {
             this.net.study();
@@ -26,7 +26,7 @@ class Asteria42 extends Component<{}> {
         }
         let { data } = this.state;
         data[data.length - 1].r = Math.sqrt(rsq / samples);
-        this.net.learn(sensitivity);
+        this.net.learn(sensitivity, friction);
         data.push({ m: this.net.m(), b: this.net.b(), r: undefined });
         this.setState({ data: data });
     }
@@ -38,7 +38,7 @@ class Asteria42 extends Component<{}> {
 
     handleSubmit = (state: FormState) => {
         for (let i: number = 0; i < state.generations; ++i) {
-            this.train(state.samples, state.sensitivity);
+            this.train(state.samples, state.sensitivity, state.friction);
         }
     };
 
@@ -61,14 +61,14 @@ class Asteria42 extends Component<{}> {
 
             <h2>Testing</h2>
             <p>If she has learned well, Asteria should output 42 no matter what input we give her. Test it out here!</p>
-            <label>Input</label>
+            <label>x=</label>
             <input
               type="number"
               name="input"
               value={input}
               onChange={this.handleChange} />
             <br />
-            <label>Output</label>
+            <label>y=</label>
             <input readOnly
               type="text"
               name="output"
@@ -78,8 +78,9 @@ class Asteria42 extends Component<{}> {
             <p>We want Asteria to ultimately settle on y=42~ReLU(42), where m=0 and b=42.<br />
             To determine how to adjust m and b, Asteria samples values of x between 0 to 1 (you decide how many) and does fancy backpropagation.<br />
             Sensitivity determines the strength of the adjustments to m and b in each generation of Asteria.<br />
+            Friction determines how much of the previous adjustment Asteria repeats in the next generation.<br />
             If sensitivity is negative, Asteria will try to maximize error instead of minimizing it.<br />
-            If sensitivity is too large (the upper bound is around 0.75), Asteria will overshoot on her adjustments and fail to settle anywhere.</p>
+            If sensitivity is too large or friction is too low, Asteria will overshoot on her adjustments and fail to settle anywhere.</p>
             <Form handleSubmit={this.handleSubmit} />
             <Table data={data} />
           </div>

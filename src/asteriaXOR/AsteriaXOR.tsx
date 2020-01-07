@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import Table, { TableRow } from "./Table";
 import Form, { FormState } from "../Form";
-import NetworkNAND from "./NetworkNAND";
+import NetworkXOR from "./NetworkXOR";
 
-class AsteriaNAND extends Component<{}> {
-    net: NetworkNAND;
+class AsteriaXOR extends Component<{}> {
+    net: NetworkXOR;
 
     state: { data: TableRow[]; x: 0, y: 0 };
 
     constructor(props: {}) {
         super(props);
 
-        this.net = new NetworkNAND();
+        this.net = new NetworkXOR();
         this.state = { data: [{ r: undefined }], x: 0, y: 0 };
     }
 
@@ -79,4 +79,4 @@ class AsteriaNAND extends Component<{}> {
     }
 }
 
-export default AsteriaNAND;
+export default AsteriaXOR;

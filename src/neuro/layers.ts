@@ -11,7 +11,9 @@ import Trainable from "./trainable";
 abstract class Layer {
     abstract get(): Neuron[];
     print(): string {
-        return "[" + this.get().map((n) => n.print()).join(", ") + "]";
+        return "[\n" + this.get().map(
+            (n) => "\t" + n.print()
+        ).join("\n") + "\n]";
     }
 
     size(): number { return this.get().length; }
@@ -54,8 +56,8 @@ abstract class TrainableLayer extends Layer implements Trainable {
     study(error: Differentiable) {
         this.get().forEach((n) => n.study(error));
     }
-    learn(sensitivity: number) {
-        this.get().forEach((n) => n.learn(sensitivity));
+    learn(sensitivity: number, friction: number) {
+        this.get().forEach((n) => n.learn(sensitivity, friction));
     }
 
     reset() {
