@@ -3,20 +3,22 @@ import { ActivationClass } from "./activation";
 import { ErrorClass } from "./error";
 import Differentiable from "../diffable/differentiable";
 
-type Sample = { input: Map<string, number>; output: Map<string, number>; };
+type Input = Map<string, number>;
+type Output = Map<string, number>;
+type Sample = { input: Input; output: Output; };
 
 abstract class Network {
     private inputLayer: InputLayer;
     private hiddenLayers: HiddenLayer[];
     private outputLayer: OutputLayer;
 
-    protected abstract source(): Sample;
+    protected abstract source(count: number): Sample[];
     protected abstract Act(): ActivationClass;
     protected abstract Err(): ErrorClass;
     protected abstract hiddenSizes(): number[];
 
     constructor() {
-        const { input, output } = this.source();
+        const { input, output } = this.source(1)[0];
         const inputNames = Array.from(input.keys());
         const outputNames = Array.from(output.keys());
 
@@ -57,7 +59,7 @@ abstract class Network {
 
     study() {
         this.reset();
-        const { input, output } = this.source();
+        const { input, output } = this.source(1)[0];
         this.inputLayer.bind(input);
         this.outputLayer.bind(output);
         const err = this.outputLayer.getErr();

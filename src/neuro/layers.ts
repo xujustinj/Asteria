@@ -7,6 +7,7 @@ import { ActivationClass } from "./activation";
 import { ErrorClass } from "./error";
 import { Weight, Bias } from "./parameters";
 import Trainable from "./trainable";
+import { orthoVectors } from "./matrices";
 
 abstract class Layer {
     abstract get(): Neuron[];
@@ -71,8 +72,16 @@ class HiddenLayer extends TrainableLayer {
     constructor(parent: Layer, Act: ActivationClass, size: number) {
         super();
         this.neurons = [];
+        const parentNeurons: Neuron[] = parent.get();
+        const weightVectors: number[][] = orthoVectors(
+            parentNeurons.length,
+            size,
+            !Act.isSymmetric
+        );
         for (let i = 0; i < size; ++i) {
-            this.neurons.push(new HiddenNeuron(Act, ...parent.get()))
+            this.neurons.push(new HiddenNeuron(Act, ...parentNeurons.map(
+                (n, j) => new Weight(n, weightVectors[i][j])
+            )));
         }
     }
 
@@ -103,10 +112,18 @@ class OutputLayer extends TrainableLayer {
     ) {
         super();
         this.neurons = new Map();
-        for (const name of names) {
+        const parentNeurons: Neuron[] = parent.get();
+        const weightVectors: number[][] = orthoVectors(
+            parentNeurons.length,
+            names.length,
+            !Act.isSymmetric
+        );
+        for (let i = 0; i < names.length; ++i) {
             this.neurons.set(
-                name,
-                new OutputNeuron(name, Act, Err, ...parent.get())
+                names[i],
+                new OutputNeuron(names[i], Act, Err, ...parentNeurons.map(
+                    (n, j) => new Weight(n, weightVectors[i][j])
+                ))
             );
         }
         this.err = new VarSum(

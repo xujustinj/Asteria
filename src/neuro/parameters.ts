@@ -41,10 +41,9 @@ class Weight extends Parameter {
     private w: Variable;
     private t: BinProduct;
 
-    constructor(n: Neuron) {
+    constructor(n: Neuron, weight: number) {
         super();
-        const rand = Math.random() - Math.random();
-        this.w = new Variable("w" + Weight.count, rand);
+        this.w = new Variable("w" + Weight.count, weight);
         this.t = new BinProduct(this.w, n.get());
         ++Weight.count;
     }

@@ -1,11 +1,15 @@
 import * as Neuro from "../neuro/neuro";
 
 class Network42 extends Neuro.Network {
-    protected source() {
-        return {
-            input: new Map<string, number>([['x', Math.random()]]),
-            output: new Map<string, number>([['y', 42]])
-        };
+    protected source(count: number) {
+        let arr = [];
+        for (let i = 0; i < count; ++i) {
+            arr.push({
+                input: new Map<string, number>([['x', Math.random()]]),
+                output: new Map<string, number>([['y', 42]])
+            });
+        }
+        return arr;
     }
     protected Act() { return Neuro.ActivationSoftplus; }
     protected Err() { return Neuro.ErrorSquared; }
