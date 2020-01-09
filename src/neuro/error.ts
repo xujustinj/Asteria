@@ -11,9 +11,9 @@ class ErrorSquared extends ExprBinary {
         return 2 * diff * (this.left.deriv(v) - this.right.deriv(v));
     }
 
-    print(): string {
-        return "(" + this.left.print() + " - " + this.right.value() + ")^2";
-    }
+    // print(): string {
+    //     return "(" + this.left.print() + " - " + this.right.value() + ")^2";
+    // }
 }
 
 class ErrorTessaracted extends ExprBinary {
@@ -28,9 +28,9 @@ class ErrorTessaracted extends ExprBinary {
         return 4 * diff * diff * diff * (this.left.deriv(v) - this.right.deriv(v));
     }
 
-    print(): string {
-        return "(" + this.left.print() + " - " + this.right.value() + ")^4";
-    }
+    // print(): string {
+    //     return "(" + this.left.print() + " - " + this.right.value() + ")^4";
+    // }
 }
 
 export interface ErrorClass {

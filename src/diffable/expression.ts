@@ -20,7 +20,7 @@ abstract class Expression implements Differentiable {
     }
     protected abstract derivImpl(_v: Variable): number;
 
-    abstract print(): string;
+    // abstract print(): string;
 
     reset() {
         this._value = NaN;

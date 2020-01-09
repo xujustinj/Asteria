@@ -53,7 +53,6 @@ abstract class Network {
 
     getErr(): Differentiable { return this.outputLayer.getErr(); }
     valueErr(): number { return this.outputLayer.valueErr(); }
-    printErr(): string { return this.outputLayer.printErr(); }
 
     avgErr(): number {
         return this.studied.reduce(

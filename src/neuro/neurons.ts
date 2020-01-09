@@ -90,7 +90,6 @@ class OutputNeuron extends TrainableNeuron {
 
     getErr(): Differentiable { return this.err; }
     valueErr(): number { return this.getErr().value(); }
-    printErr(): string { return this.getErr().print(); }
 
     bind(val: number) { this.y.bind(val); }
 

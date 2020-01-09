@@ -12,9 +12,9 @@ class BinProduct extends ExprBinary {
         return dlr + ldr;
     }
 
-    print(): string {
-        return this.left.print() + " * " + this.right.print();
-    }
+    // print(): string {
+    //     return this.left.print() + " * " + this.right.print();
+    // }
 }
 
 class VarSum extends ExprVariadic {
@@ -26,9 +26,9 @@ class VarSum extends ExprVariadic {
         return this.terms.reduce((acc, t) => acc + t.deriv(v), 0);
     }
 
-    print(): string {
-        return "(" + this.terms.map((t) => t.print()).join(" + ") + ")";
-    }
+    // print(): string {
+    //     return "(" + this.terms.map((t) => t.print()).join(" + ") + ")";
+    // }
 }
 
 export { BinProduct, VarSum };

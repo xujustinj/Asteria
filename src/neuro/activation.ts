@@ -22,9 +22,9 @@ class ActivationLogistic extends ExprUnary {
         return product(this.arg.deriv(v), d);
     }
 
-    print(): string {
-        return "σ(" + this.arg.print() + ")";
-    }
+    // print(): string {
+    //     return "σ(" + this.arg.print() + ")";
+    // }
 }
 
 class ActivationSoftplus extends ExprUnary {
@@ -41,9 +41,9 @@ class ActivationSoftplus extends ExprUnary {
         return product(this.arg.deriv(v), d);
     }
 
-    print(): string {
-        return "ReLU(" + this.arg.print() + ")";
-    }
+    // print(): string {
+    //     return "ReLU(" + this.arg.print() + ")";
+    // }
 }
 
 export interface ActivationClass {

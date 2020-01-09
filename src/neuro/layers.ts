@@ -145,7 +145,6 @@ class OutputLayer extends TrainableLayer {
 
     getErr(): Differentiable { return this.err; }
     valueErr(): number { return this.getErr().value(); }
-    printErr(): string { return this.getErr().print(); }
 
     values(): Map<string, number> {
         let map = new Map<string, number>();
