@@ -19,14 +19,11 @@ class Asteria42 extends Component<{}> {
     }
 
     train(samples: number, sensitivity: number, friction: number) {
-        let rsq = 0;
-        for (let i = 0; i < samples; ++i) {
-            this.net.study();
-            rsq += this.net.valueErr();
-        }
+        this.net.study(samples);
+        const rsq = this.net.rsq();
         let { data } = this.state;
-        data[data.length - 1].r = Math.sqrt(rsq / samples);
         this.net.learn(sensitivity, friction);
+        data[data.length - 1].r = Math.sqrt(rsq);
         data.push({ m: this.net.m(), b: this.net.b(), r: undefined });
         this.setState({ data: data });
     }

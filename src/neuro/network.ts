@@ -12,12 +12,16 @@ abstract class Network {
     private hiddenLayers: HiddenLayer[];
     private outputLayer: OutputLayer;
 
+    protected studied: { sample: Sample, err: number }[];
+
     protected abstract source(count: number): Sample[];
     protected abstract Act(): ActivationClass;
     protected abstract Err(): ErrorClass;
     protected abstract hiddenSizes(): number[];
 
     constructor() {
+        this.studied = [];
+
         const { input, output } = this.source(1)[0];
         const inputNames = Array.from(input.keys());
         const outputNames = Array.from(output.keys());
@@ -51,20 +55,30 @@ abstract class Network {
     valueErr(): number { return this.outputLayer.valueErr(); }
     printErr(): string { return this.outputLayer.printErr(); }
 
-    getOutput(input: Map<string, number>): Map<string, number> {
+    avgErr(): number {
+        return this.studied.reduce(
+            (acc, study) => acc + study.err, 0
+        ) / this.studied.length;
+    }
+
+    bind(input: Input, output: Output | null = null) {
         this.reset();
         this.inputLayer.bind(input);
+        if (output) { this.outputLayer.bind(output); }
+    }
+    getOutput(input: Input): Output {
+        this.bind(input);
         return this.outputLayer.values();
     }
 
-    study() {
-        this.reset();
-        const { input, output } = this.source(1)[0];
-        this.inputLayer.bind(input);
-        this.outputLayer.bind(output);
-        const err = this.outputLayer.getErr();
-        this.hiddenLayers.forEach((layer) => layer.study(err));
-        this.outputLayer.study(err);
+    study(count: number) {
+        this.studied = this.source(count).map((sample) => {
+            this.bind(sample.input, sample.output);
+            const err = this.outputLayer.getErr();
+            this.hiddenLayers.forEach((layer) => layer.study(err));
+            this.outputLayer.study(err);
+            return { sample: sample, err: err.value() };
+        });
     }
     learn(sensitivity: number, friction: number) {
         this.hiddenLayers.forEach(
@@ -79,4 +93,15 @@ abstract class Network {
     }
 }
 
-export default Network;
+abstract class TestableNetwork extends Network {
+    protected abstract tests(): Sample[];
+    rsq(): number {
+        const tests = this.tests();
+        return tests.reduce((acc, { input, output }) => {
+            this.bind(input, output);
+            return acc + this.valueErr();
+        }, 0) / tests.length;
+    }
+}
+
+export { Network, TestableNetwork };

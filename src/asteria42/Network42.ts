@@ -1,9 +1,13 @@
 import * as Neuro from "../neuro/neuro";
 
-class Network42 extends Neuro.Network {
+class Network42 extends Neuro.TestableNetwork {
     protected source(count: number) {
-        let arr = [];
-        for (let i = 0; i < count; ++i) {
+        this.studied.sort((a, b) => b.err - a.err);
+        let arr = this.studied.slice(0, count / 2).map(
+            (study) => study.sample
+        );
+        console.log(arr);
+        for (let i = arr.length; i < count; ++i) {
             arr.push({
                 input: new Map<string, number>([['x', Math.random()]]),
                 output: new Map<string, number>([['y', 42]])
@@ -14,6 +18,18 @@ class Network42 extends Neuro.Network {
     protected Act() { return Neuro.ActivationSoftplus; }
     protected Err() { return Neuro.ErrorSquared; }
     protected hiddenSizes() { return []; }
+
+    private cachedTests = [
+        {
+            input: new Map<string, number>([['x', 0]]),
+            output: new Map<string, number>([['y', 42]])
+        },
+        {
+            input: new Map<string, number>([['x', 1]]),
+            output: new Map<string, number>([['y', 42]])
+        }
+    ];
+    protected tests() { return this.cachedTests; }
 
     // Convenience Methods
 

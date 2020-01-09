@@ -1,11 +1,15 @@
 import * as Neuro from "../neuro/neuro";
 
-class NetworkNAND extends Neuro.Network {
+class NetworkNAND extends Neuro.TestableNetwork {
     protected source(count: number) {
-        let arr = [];
-        for (let i = 0; i < count; ++i) {
-            const x = (Math.random() + Math.random()) / 2;
-            const y = (Math.random() + Math.random()) / 2;
+        this.studied.sort((a, b) => b.err - a.err);
+        const quarter = count / 4;
+        let arr = this.studied.slice(quarter, 2 * quarter).map(
+            (study) => study.sample
+        );
+        for (let i = arr.length; i < count; ++i) {
+            const x = Math.random();
+            const y = Math.random();
             const xNANDy = (x > 0.5 && y > 0.5) ? 0 : 1;
             arr.push({
                 input: new Map<string, number>([['x', x], ['y', y]]),
@@ -17,6 +21,21 @@ class NetworkNAND extends Neuro.Network {
     protected Act() { return Neuro.ActivationLogistic; }
     protected Err() { return Neuro.ErrorSquared; }
     protected hiddenSizes() { return [2]; }
+
+    private cachedTests = (() => {
+        let tests = [];
+        for (let x = 0; x <= 1; x += 0.1) {
+            for (let y = 0; y <= 1; y += 0.1) {
+                const xNANDy = (x > 0.5 && y > 0.5) ? 0 : 1;
+                tests.push({
+                    input: new Map<string, number>([['x', x], ['y', y]]),
+                    output: new Map<string, number>([["xNANDy", xNANDy]])
+                });
+            }
+        }
+        return tests;
+    })();
+    protected tests() { return this.cachedTests; }
 
     // Convenience Methods
 

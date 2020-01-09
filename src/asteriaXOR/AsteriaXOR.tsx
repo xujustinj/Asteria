@@ -16,13 +16,10 @@ class AsteriaXOR extends Component<{}> {
     }
 
     train(samples: number, sensitivity: number, friction: number) {
-        let rsq = 0;
-        for (let i = 0; i < samples; ++i) {
-            this.net.study();
-            rsq += this.net.valueErr();
-        }
+        this.net.study(samples);
+        const rsq = this.net.avgErr();
         let { data } = this.state;
-        data[data.length - 1].r = Math.sqrt(rsq / samples);
+        data[data.length - 1].r = rsq;
         this.net.learn(sensitivity, friction);
         data.push({ r: undefined });
         this.setState({ data: data });

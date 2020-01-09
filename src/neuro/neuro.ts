@@ -1,8 +1,6 @@
-import Network from "./network";
-
 export { ActivationLogistic, ActivationSoftplus } from "./activation";
-export { ErrorSquared } from "./error";
+export { ErrorSquared, ErrorTessaracted } from "./error";
 export { Weight, Bias } from "./parameters";
 export { InputNeuron, HiddenNeuron, OutputNeuron } from "./neurons";
 export { InputLayer, HiddenLayer, OutputLayer } from "./layers";
-export { Network };
+export { Network, TestableNetwork } from "./network";
