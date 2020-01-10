@@ -1,6 +1,6 @@
 import Layer, { InputLayer, HiddenLayer, OutputLayer } from "./layers";
 import { ActivationClass } from "./activation";
-import { ErrorClass } from "./error";
+import { ErrorClass, ErrorSquared } from "./error";
 import Differentiable from "../diffable/differentiable";
 
 type Input = Map<string, number>;
@@ -93,6 +93,8 @@ abstract class Network {
 }
 
 abstract class TestableNetwork extends Network {
+    protected Err(): ErrorClass { return ErrorSquared; }
+
     protected abstract tests(): Sample[];
     rsq(): number {
         const tests = this.tests();
@@ -100,6 +102,9 @@ abstract class TestableNetwork extends Network {
             this.bind(input, output);
             return acc + this.valueErr();
         }, 0) / tests.length;
+    }
+    r(): number {
+        return Math.sqrt(this.rsq());
     }
 }
 

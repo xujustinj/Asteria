@@ -6,7 +6,6 @@ class Network42 extends Neuro.TestableNetwork {
         let arr = this.studied.slice(0, count / 2).map(
             (study) => study.sample
         );
-        console.log(arr);
         for (let i = arr.length; i < count; ++i) {
             arr.push({
                 input: new Map<string, number>([['x', Math.random()]]),

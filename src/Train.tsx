@@ -1,21 +1,23 @@
 import React, { Component } from "react";
 
-export type FormState = {
-    samples: number;
-    sensitivity: number;
-    friction: number;
-    generations: number;
+type TrainProps = {
+    onTrain: (
+        samples: number,
+        sensitivity: number,
+        friction: number,
+        generations: number
+    ) => void;
 };
 
-export type FormProps = {
-    handleSubmit: (state: FormState) => void;
-};
+class Train extends Component<TrainProps> {
+    state: {
+        samples: number;
+        sensitivity: number;
+        friction: number;
+        generations: number;
+    };
 
-class Form extends Component<FormProps> {
-    state: FormState;
-    handleSubmit: (state: FormState) => void;
-
-    constructor(props: FormProps) {
+    constructor(props: TrainProps) {
         super(props);
         this.state = {
             samples: 1,
@@ -23,29 +25,29 @@ class Form extends Component<FormProps> {
             friction: 1,
             generations: 1,
         };
-        this.handleSubmit = (props as any).handleSubmit;
     }
 
-    handleChange = (event: { target: { name: any; value: any; }; }) => {
+    handleChange(event: { target: { name: string; value: any; }; }) {
         const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
-    submitForm = () => {
-        (this.props as any).handleSubmit(this.state)
+    submitForm() {
+        const { samples, sensitivity, friction, generations, } = this.state;
+        this.props.onTrain(samples, sensitivity, friction, generations);
     }
 
     render() {
         const { samples, sensitivity, friction, generations, } = this.state;
         return (
-          <form>
+          <form className="Train">
             <label>Samples</label>
             <input
               type="number"
               name="samples"
               value={isFinite(samples) ? samples : ""}
               min="1"
-              onChange={this.handleChange} />
+              onChange={this.handleChange.bind(this)} />
             <br />
 
             <label>Sensitivity</label>
@@ -53,7 +55,7 @@ class Form extends Component<FormProps> {
               type="number"
               name="sensitivity"
               value={isFinite(sensitivity) ? sensitivity : ""}
-              onChange={this.handleChange} />
+              onChange={this.handleChange.bind(this)} />
             <br />
 
             <label>Friction</label>
@@ -61,7 +63,7 @@ class Form extends Component<FormProps> {
               type="number"
               name="friction"
               value={isFinite(friction) ? friction : ""}
-              onChange={this.handleChange} />
+              onChange={this.handleChange.bind(this)} />
             <br />
 
             <label>Generations</label>
@@ -70,13 +72,16 @@ class Form extends Component<FormProps> {
               name="generations"
               value={isFinite(generations) ? generations : ""}
               min="0"
-              onChange={this.handleChange} />
+              onChange={this.handleChange.bind(this)} />
             <br />
 
-            <input type="button" value="Train" onClick={this.submitForm} />
+            <input
+              type="button"
+              value="Train"
+              onClick={this.submitForm.bind(this)} />
           </form>
         );
     }
 }
 
-export default Form;
+export default Train;
