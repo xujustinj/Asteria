@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TestableNetwork } from "./neuro/neuro";
+import { TestableNetwork } from "./neuro";
 
 type TestProps = {
     network: TestableNetwork;

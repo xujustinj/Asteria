@@ -1,7 +1,7 @@
 import Layer, { InputLayer, HiddenLayer, OutputLayer } from "./layers";
-import { ActivationClass } from "./activation";
-import { ErrorClass, ErrorSquared } from "./error";
-import Differentiable from "../diffable/differentiable";
+import { ActivationClass } from "./activations";
+import { ErrorClass, ErrorSquared } from "./errors";
+import { Differentiable } from "../diffable";
 
 type Input = Map<string, number>;
 type Output = Map<string, number>;

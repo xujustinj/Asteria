@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TestableNetwork } from "./neuro/neuro";
+import { TestableNetwork } from "./neuro";
 import Test from "./Test"
 import Train from "./Train";
 import Table, { Row } from "./Table";

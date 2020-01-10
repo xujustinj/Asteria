@@ -1,4 +1,4 @@
-import { Differentiable, ExprBinary, Variable } from "../diffable/diffable";
+import { Differentiable, ExprBinary, Variable } from "../diffable";
 
 class ErrorSquared extends ExprBinary {
     protected valueImpl(): number {

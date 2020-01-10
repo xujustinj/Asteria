@@ -1,4 +1,4 @@
-import { Differentiable, ExprUnary, Variable } from "../diffable/diffable";
+import { Differentiable, ExprUnary, Variable } from "../diffable";
 
 // Vanishing gradient countermeasures
 function positive(x: number): number {
@@ -10,8 +10,6 @@ function product(x: number, y: number): number {
 }
 
 class ActivationLogistic extends ExprUnary {
-    static isSymmetric: Boolean = true;
-
     protected valueImpl(): number {
         return positive(1 / (1 + Math.exp(-this.arg.value())));
     }
@@ -28,8 +26,6 @@ class ActivationLogistic extends ExprUnary {
 }
 
 class ActivationSoftplus extends ExprUnary {
-    static isSymmetric: Boolean = false;
-
     protected valueImpl(): number {
         const x = this.arg.value();
         const y = 1 + Math.exp(x);
@@ -47,7 +43,6 @@ class ActivationSoftplus extends ExprUnary {
 }
 
 export interface ActivationClass {
-    isSymmetric: Boolean
     new(arg: Differentiable): ExprUnary;
 }
 export { ActivationLogistic, ActivationSoftplus };

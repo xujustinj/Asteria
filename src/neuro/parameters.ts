@@ -1,4 +1,4 @@
-import { Differentiable, Variable, BinProduct } from "../diffable/diffable";
+import { Differentiable, Variable, BinProduct } from "../diffable";
 import Trainable from "./trainable";
 import Neuron from "./neurons";
 

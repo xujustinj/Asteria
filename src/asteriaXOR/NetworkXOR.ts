@@ -1,4 +1,4 @@
-import * as Neuro from "../neuro/neuro";
+import * as Neuro from "../neuro";
 
 class NetworkXOR extends Neuro.TestableNetwork {
     protected source(count: number) {

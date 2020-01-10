@@ -3,11 +3,11 @@ import {
     ExprUnary, ExprBinary,
     Variable,
     VarSum
-} from "../diffable/diffable";
+} from "../diffable";
 import Trainable from "./trainable";
 import { Weight, Bias } from "./parameters";
-import { ActivationClass } from "./activation";
-import { ErrorClass } from "./error";
+import { ActivationClass } from "./activations";
+import { ErrorClass } from "./errors";
 
 abstract class Neuron {
     abstract get(): Differentiable;

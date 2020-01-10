@@ -1,4 +1,4 @@
-import { Differentiable } from "../diffable/diffable";
+import { Differentiable } from "../diffable";
 
 interface Trainable {
     study(error: Differentiable): void;

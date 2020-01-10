@@ -2,12 +2,12 @@ import Neuron, {
     InputNeuron,
     TrainableNeuron, HiddenNeuron, OutputNeuron
 } from "./neurons";
-import { Differentiable, VarSum } from "../diffable/diffable";
-import { ActivationClass } from "./activation";
-import { ErrorClass } from "./error";
+import { Differentiable, VarSum } from "../diffable";
+import { ActivationClass } from "./activations";
+import { ErrorClass } from "./errors";
 import { Weight, Bias } from "./parameters";
 import Trainable from "./trainable";
-import { orthoVectors } from "./matrices";
+import { orthoVectors } from "../matrices";
 
 abstract class Layer {
     abstract get(): Neuron[];
@@ -75,8 +75,7 @@ class HiddenLayer extends TrainableLayer {
         const parentNeurons: Neuron[] = parent.get();
         const weightVectors: number[][] = orthoVectors(
             parentNeurons.length,
-            size,
-            !Act.isSymmetric
+            size
         );
         for (let i = 0; i < size; ++i) {
             this.neurons.push(new HiddenNeuron(Act, ...parentNeurons.map(
@@ -115,8 +114,7 @@ class OutputLayer extends TrainableLayer {
         const parentNeurons: Neuron[] = parent.get();
         const weightVectors: number[][] = orthoVectors(
             parentNeurons.length,
-            names.length,
-            !Act.isSymmetric
+            names.length
         );
         for (let i = 0; i < names.length; ++i) {
             this.neurons.set(
