@@ -30,3 +30,6 @@ yarn-error.log*
 
 # misc
 debug.log
+
+# CRA garbage
+/src/react-app-env.d.ts
