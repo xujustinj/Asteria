@@ -15,16 +15,20 @@ With a focus on learning, this project is intended to take the path of greatest 
 A side quest on this adventure is to get used to React and object-oriented programming in JavaScript (TypeScript). The project site currently hosts a collection of intermediate proofs-of-concept that you can train in your own browser.
 
 * **Asteria 42** learns to output the answer to life, the universe, and everything (faster than Deep Thought).
-* **Asteria NAND** learns to output `a NAND b`. In theory, this means that we can learn any Boolean function just by stringing together a bunch of Asteria NANDs.
-* **Asteria XOR** is a bunch of strung-together Asteria NANDs. Whether it actually learns to output `a XOR b`  is yet to be seen.
 
-In each of the above versions, Asteria is initialized with pseudorandom weights, and with biases set to zero.
+* **Asteria NAND** learns to output `a NAND b`, with a single hidden layer of 2 neurons. In theory, this means that we can learn any Boolean function just by stringing together a bunch of Asteria NANDs. Values greater than 0.5 are treated as true. *Below: A heat map of Asteria's near-perfect output in the range [0,1]x[0,1]. Green indicates points (a,b) mapped to true, and red indicates pairs mapped to false. Asteria reached this point after 10000 generations.*
+
+  <img src="C:\Users\Justin\Computer Science\asteria\AsteriaNAND-solution.png" style="zoom:25%;" />
+
+* **Asteria XOR** is a bunch of strung-together Asteria NANDs (3 hidden layers of 2, 4, and 4 neurons respectively). Asteria XOR learns to output `a XOR b` (but the time it takes to do so on most browsers is in the tens of minutes).
+
+In each of the above versions, Asteria is initialised with pseudorandom weights, and with biases set to zero.
 
 ## Implementation
 
-Asteria currently learns by gradient descent using derivatives computed by a kind of symbolic differentiation. (If I cared about performance, I wouldn't have used JS in the first place!) Symbolic differentiation is implemented in the `Diffable` module.
+Asteria runs completely within the browser and is trained on the client's machine. Doubly limited by both the questionable performance of JavaScript and the synchronous processing power of a single computer, part of the challenge is to get Asteria to learn as efficiently as possible.
 
-The `Neuro` module then introduces neurons, layers, networks as increasingly abstract wrappers around `Diffable`. At the layer level, we train a network by binding an input to the input layer, then differentiating the output layer's error function with respect to each of the weight and bias parameters.
+Originally, Asteria used symbolic differentiation whose implementation can still be seen in the deprecated `src/deprecated/diffable` and `src/deprecated/neuro`  modules. After Asteria XOR failed to train (at any reasonable speed) using symbolic differentiation, I overhauled its structure in favour of the mathematically equivalent but computationally faster method of matrix multiplication.
 
 ## Need for Speed
 
@@ -36,10 +40,10 @@ The adjustment to each parameter determines its acceleration in the [momentum me
 
 ### Orthogonal Weight Vectors
 
-Especially with a symmetric activation function, it would be wasteful to have multiple neurons derived from the previous layer with weights that are scalar multiples of one another; those two neurons would be mostly redundant. To avoid this, layers are initialized with pseudorandom initial weights instead.
+Especially with a symmetric activation function, it would be wasteful to have multiple neurons derived from the previous layer with weights that are scalar multiples of one another; those two neurons would be mostly redundant. To avoid this, layers are initialised with pseudorandom initial weights instead.
 
-The best way (I could think of) to avoid redundancy is to have weight vectors that are "as orthogonal as possible". Specifically, we want to minimize their pairwise dot products. I don't know any fast way to compute this, so Asteria uses a heuristic:
+The best way (I could think of) to avoid redundancy is to have weight vectors that are "as orthogonal as possible". Specifically, we want to minimise their pairwise dot products. I don't know any fast way to compute this, so Asteria uses a heuristic:
 
-If there are n neurons in the previous layer, each group of n weight vectors correspond to some random rotation of the standard basis in R^n. Within the groups, vectors are mutually orthogonal; between the groups it is up to chance.
+If there are n neurons in the previous layer, each group of n weight vectors correspond to some random rotation of the standard basis in R^n. Each group is rotated randomly, so there is still a chance that multiple vectors are near-parallel by simple coincidence. Nonetheless, in most cases in Asteria, a single group is sufficient.
 
 This seems to be an uncommon technique that occasionally comes up in research (e.g. [Weideman](https://hjweide.github.io/orthogonal-initialization-in-convolutional-layers)), so I'll definitely be doing more testing to see if it is empirically useful. Stay turned for more developments.
