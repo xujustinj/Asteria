@@ -40,7 +40,6 @@ Especially with a symmetric activation function, it would be wasteful to have mu
 
 The best way (I could think of) to avoid redundancy is to have weight vectors that are "as orthogonal as possible". Specifically, we want to minimize their pairwise dot products. I don't know any fast way to compute this, so Asteria uses a heuristic:
 
-If there are n neurons in the previous layer, each group of n weight vectors correspond to some random rotation of the standard basis in R^n. Within the groups, vectors are maximally 
+If there are n neurons in the previous layer, each group of n weight vectors correspond to some random rotation of the standard basis in R^n. Within the groups, vectors are mutually orthogonal; between the groups it is up to chance.
 
 This seems to be an uncommon technique that occasionally comes up in research (e.g. [Weideman](https://hjweide.github.io/orthogonal-initialization-in-convolutional-layers)), so I'll definitely be doing more testing to see if it is empirically useful. Stay turned for more developments.
-

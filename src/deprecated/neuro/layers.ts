@@ -7,7 +7,7 @@ import { ActivationClass } from "./activations";
 import { ErrorClass } from "./errors";
 import { Weight, Bias } from "./parameters";
 import Trainable from "./trainable";
-import { orthoVectors } from "../matrices";
+import { orthoVectors } from "../../matrices";
 
 abstract class Layer {
     abstract get(): Neuron[];

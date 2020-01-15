@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TestableNetwork } from "./neuro";
+import { TestableNetwork } from "./neural";
 
 type TestProps = {
     network: TestableNetwork;
@@ -16,12 +16,13 @@ class Test extends Component<TestProps> {
         super(props);
 
         this.net = props.network;
-        const inputs = new Map(this.net.getInputLayer().get().map(
-            (neuron) => [neuron.print(), 0]
-        ));
+        const inputs = this.net.inputLayer().binding();
+        for (const [name] of inputs) {
+            inputs.set(name, 0);
+        }
         this.state = {
             inputs: inputs,
-            outputs: this.net.getOutput(inputs),
+            outputs: this.net.output(inputs),
         }
     }
 
@@ -29,7 +30,7 @@ class Test extends Component<TestProps> {
         const { name, value } = event.target;
         const { inputs } = this.state;
         inputs.set(name, value);
-        this.setState({ inputs: inputs, outputs: this.net.getOutput(inputs) });
+        this.setState({ inputs: inputs, outputs: this.net.output(inputs) });
     }
 
     render() {

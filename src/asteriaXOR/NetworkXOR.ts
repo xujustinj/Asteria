@@ -1,6 +1,6 @@
-import * as Neuro from "../neuro";
+import * as Neural from "../neural";
 
-class NetworkXOR extends Neuro.TestableNetwork {
+class NetworkXOR extends Neural.TestableNetwork {
     protected source(count: number) {
       this.studied.sort((a, b) => b.err - a.err);
       const quarter = count / 4;
@@ -18,9 +18,13 @@ class NetworkXOR extends Neuro.TestableNetwork {
         }
         return arr;
     }
-    protected Act() { return Neuro.ActivationLogistic; }
-    protected Err() { return Neuro.ErrorSquared; }
     protected hiddenSizes() { return [2, 4, 4]; }
+    protected makeHiddenLayer(prev: Neural.Layer, width: number) {
+        return new Neural.LogisticHiddenLayer(prev, width);
+    }
+    protected makeOutputLayer(prev: Neural.Layer, ...names: string[]) {
+        return new Neural.LogisticOutputLayer(prev, ...names);
+    }
 
     private cachedTests = (() => {
         let tests = [];
@@ -40,7 +44,7 @@ class NetworkXOR extends Neuro.TestableNetwork {
     // Convenience Methods
 
     value(x: number, y: number): number {
-        return this.getOutput(
+        return this.output(
             new Map<string, number>([['x', x], ['y', y]])
         ).get("xXORy")!;
     }

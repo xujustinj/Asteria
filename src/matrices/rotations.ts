@@ -1,6 +1,6 @@
 import Matrix, { AsymMatrix } from "./matrix";
 import standardBasis from "./standard";
-import { matrixProduct } from "./operations";
+import { multMM } from "./operations";
 
 type Plane = { x: number; y: number; };
 
@@ -58,7 +58,7 @@ function randomRotate(matrix: Matrix): Matrix {
 
     return planess.map((planes) =>
         randomRotation(dim, ...planes)
-    ).reduceRight(matrixProduct, matrix);
+    ).reduceRight(multMM, matrix);
 }
 
 function orthoVectors(dim: number, count: number, scale = 1): number[][] {

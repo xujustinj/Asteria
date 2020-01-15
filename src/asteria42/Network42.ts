@@ -1,6 +1,6 @@
-import * as Neuro from "../neuro";
+import * as Neural from "../neural";
 
-class Network42 extends Neuro.TestableNetwork {
+class Network42 extends Neural.TestableNetwork {
     protected source(count: number) {
         this.studied.sort((a, b) => b.err - a.err);
         let arr = this.studied.slice(0, count / 2).map(
@@ -14,9 +14,13 @@ class Network42 extends Neuro.TestableNetwork {
         }
         return arr;
     }
-    protected Act() { return Neuro.ActivationSoftplus; }
-    protected Err() { return Neuro.ErrorSquared; }
     protected hiddenSizes() { return []; }
+    protected makeHiddenLayer(prev: Neural.Layer, width: number) {
+        return new Neural.SoftplusHiddenLayer(prev, width);
+    }
+    protected makeOutputLayer(prev: Neural.Layer, ...names: string[]) {
+        return new Neural.SoftplusOutputLayer(prev, ...names);
+    }
 
     private cachedTests = [
         {
@@ -33,14 +37,14 @@ class Network42 extends Neuro.TestableNetwork {
     // Convenience Methods
 
     m(): number {
-        return this.getOutputLayer().getWeight('y', 0)!.value();
+        return this.outputLayer().weight(0, 'y');
     }
     b(): number {
-        return this.getOutputLayer().getBias('y')!.value();
+        return this.outputLayer().bias('y');
     }
 
     value(x: number): number {
-        return this.getOutput(new Map<string, number>([['x', x]])).get('y')!;
+        return this.output(new Map<string, number>([['x', x]])).get('y')!;
     }
 }
 

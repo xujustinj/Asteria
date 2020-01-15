@@ -3,7 +3,11 @@ import standardBasis from "./matrices/standard";
 
 export type Matrix = _Matrix;
 export { SymMatrix, AsymMatrix };
-export { dotProduct, matrixProduct } from "./matrices/operations";
+export {
+    dot, multVV,
+    multMM, multMV, multMVplusV,
+    multMtV
+} from "./matrices/operations";
 export { standardBasis };
 export {
     randomRotation, randomRotate, orthoVectors
