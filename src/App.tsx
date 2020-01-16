@@ -3,34 +3,42 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
+    Link,
+    Redirect
 } from "react-router-dom";
+import Welcome from "./Welcome";
 import Asteria42 from "./asteria42/Asteria42";
 import AsteriaNAND from "./asteriaNAND/AsteriaNAND";
 import AsteriaXOR from "./asteriaXOR/AsteriaXOR";
 
+const asteria = "/Asteria"
+
 function App() {
     return (
       <Router>
-        <div>
+        <header>
           <nav>
-            [<Link to="/Asteria/42">42</Link>]
-            [<Link to="/Asteria/NAND">NAND</Link>]
-            [<Link to="/Asteria/XOR">XOR</Link>]
-					</nav>
-				</div>
+            [<Link to={`${asteria}/42`}>42</Link>]
+            [<Link to={`${asteria}/NAND`}>NAND</Link>]
+            [<Link to={`${asteria}/XOR`}>XOR</Link>]
+          </nav>
+		</header>
         <Switch>
-          <Route path="/Asteria/42">
+          <Redirect exact from={asteria} to={`${asteria}/welcome`} />
+          <Route path={`${asteria}/welcome`}>
+            <Welcome />
+          </Route>
+          <Route path={`${asteria}/42`}>
             <Asteria42 />
           </Route>
-          <Route path="/Asteria/NAND">
+          <Route path={`${asteria}/NAND`}>
             <AsteriaNAND />
           </Route>
-          <Route path="/Asteria/XOR">
+          <Route path={`${asteria}/XOR`}>
             <AsteriaXOR />
           </Route>
         </Switch>
-			</Router>
+	  </Router>
     );
 }
 

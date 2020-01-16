@@ -1,0 +1,26 @@
+// Maximum-compatibility font mixin
+@mixin font-face($family, $name, $svg, $weight: normal, $style: normal) {
+	$path: '../fonts/#{$name}';
+  @font-face {
+    font-family: $family;
+    src: url('#{$path}.eot');
+    src: url('#{$path}.eot?#iefix') format('embedded-opentype'), url('#{$path}.woff') format('woff'), url('#{$path}.ttf') format('truetype'), url('#{$path}.svg##{$svg}') format('svg');
+    font-weight: $weight;
+    font-style: $style;
+  }
+}
+
+// Madeon Runes Light
+// Madeon Runes Regular
+// Madeon Runes Bold
+// Source: TwoNineFive (https://www.dafont.com/madeon-runes.font)
+// Adapted: Font Squirrel (https://www.fontsquirrel.com) on January 16, 2020
+
+@include font-face('Adventure', 'madeon_runes_bold-webfont', 'madeon_runes_boldbold', bolder);
+@include font-face('Adventure', 'madeon_runes_light-webfont', 'madeon_runes_lightregular', lighter);
+@include font-face('Adventure', 'madeon_runes_regular-webfont', 'madeon_runes_regularregular');
+
+
+h1 {
+	font: 12.5vw 'Adventure';
+}
