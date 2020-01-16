@@ -16,9 +16,9 @@ A side quest on this adventure is to get used to React and object-oriented progr
 
 * **Asteria 42** learns to output the answer to life, the universe, and everything (faster than Deep Thought).
 
-* **Asteria NAND** learns to output `a NAND b`, with a single hidden layer of 2 neurons. In theory, this means that we can learn any Boolean function just by stringing together a bunch of Asteria NANDs. Values greater than 0.5 are treated as true. *Below: A heat map of Asteria's near-perfect output in the range [0,1]x[0,1]. Green indicates points (a,b) mapped to true, and red indicates pairs mapped to false. Asteria reached this point after 10000 generations.*
+* **Asteria NAND** learns to output `a NAND b`, with a single hidden layer of 2 neurons. In theory, this means that we can learn any Boolean function just by stringing together a bunch of Asteria NANDs. Values greater than 0.5 are treated as true. *Below: A heat map of Asteria NAND's near-perfect output in the range [0,1]x[0,1]. Green indicates points (a,b) mapped to true, and red indicates pairs mapped to false. Asteria reached this point after 10000 generations.*
 
-  <img src="C:\Users\Justin\Computer Science\asteria\AsteriaNAND-solution.png" style="zoom:25%;" />
+![A heat map of Asteria NAND's output in the range [0,1]x[0,1]](img/NAND-solution.png "A heat map of Asteria NAND's output in the range [0,1]x[0,1]")
 
 * **Asteria XOR** is a bunch of strung-together Asteria NANDs (3 hidden layers of 2, 4, and 4 neurons respectively). Asteria XOR learns to output `a XOR b` (but the time it takes to do so on most browsers is in the tens of minutes).
 
