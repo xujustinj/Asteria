@@ -1,11 +1,11 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "a716dd4b9df11f04bd06c65dfc1fdcd5",
+    "revision": "81aea236319dcac7e3d240dc9211f660",
     "url": "/Asteria/index.html"
   },
   {
-    "revision": "69e6553aa7b4294d2eac",
-    "url": "/Asteria/static/css/main.6f9247e1.chunk.css"
+    "revision": "00107d7d203fe34b1b94",
+    "url": "/Asteria/static/css/main.eb1c3528.chunk.css"
   },
   {
     "revision": "b2cda27a5b0e44b90806",
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Asteria/static/js/2.2179954e.chunk.js.LICENSE"
   },
   {
-    "revision": "69e6553aa7b4294d2eac",
-    "url": "/Asteria/static/js/main.e2ff5dc1.chunk.js"
+    "revision": "00107d7d203fe34b1b94",
+    "url": "/Asteria/static/js/main.474d48bb.chunk.js"
   },
   {
     "revision": "d636057232d7c12390b7",
