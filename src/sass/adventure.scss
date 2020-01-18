@@ -20,7 +20,46 @@
 @include font-face('Adventure', 'madeon_runes_light-webfont', 'madeon_runes_lightregular', lighter);
 @include font-face('Adventure', 'madeon_runes_regular-webfont', 'madeon_runes_regularregular');
 
+@mixin adventure-on-hover {
+  font-family: "Source Code Pro", monospace;
+  &:hover {
+      font-family: "Adventure";
+      letter-spacing: 0.17vmin;
+  }
+}
+
+@mixin adventure-off-hover {
+  font-family: "Adventure";
+  letter-spacing: 0.17vmin;
+  &:hover {
+      font-family: "Source Code Pro", monospace;
+      letter-spacing: 0;
+  }
+}
+
+.adventure-on-hover {
+  @include adventure-on-hover();
+}
+
+.adventure-off-hover {
+  @include adventure-off-hover();
+}
 
 h1 {
-	font: 12.5vw 'Adventure';
+  @include adventure-on-hover();
+  font-size: 5vmin;
+  line-height: 5vmin;
+  font-weight: bold;
+}
+h2 {
+  @include adventure-on-hover();
+  font-size: 4vmin;
+  line-height: 4vmin;
+  font-weight: bold;
+}
+h3 {
+  @include adventure-on-hover();
+  font-size: 3.2vmin;
+  line-height: 3.2vmin;
+  font-weight: bold;
 }

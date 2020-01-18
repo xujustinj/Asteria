@@ -1,0 +1,20 @@
+.main {
+  width: 100%;
+  height: calc(100% - 10vmin);
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 1; }
+
+.content {
+  overflow-x: auto;
+  overflow-y: auto;
+  padding-left: 2vmin;
+  padding-right: 2vmin;
+  padding-bottom: 2vmin;
+  width: 100%; }
+
+.signoff {
+  text-align: right;
+  font-weight: bold;
+  font-size: 3.2vmin;
+  line-height: 3.2vmin; }

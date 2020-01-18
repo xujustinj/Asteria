@@ -1,0 +1,22 @@
+.sidebar-width {
+  width: 30vmin;
+  flex-shrink: 0; }
+
+.sidebar {
+  background-color: #81595f;
+  width: 30vmin;
+  flex-shrink: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 1vmin; }
+  .sidebar a {
+    font-size: 3vmin;
+    font-weight: bold;
+    line-height: 3vmin;
+    text-decoration: none;
+    color: white;
+    margin: 2vmin; }
+  .sidebar .current {
+    background-color: white;
+    color: #81595f; }

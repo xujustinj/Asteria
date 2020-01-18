@@ -19,5 +19,42 @@
   font-weight: normal;
   font-style: normal; }
 
-.adventure {
-  font: 12.5vw 'Adventure'; }
+.adventure-on-hover {
+  font-family: "Source Code Pro", monospace; }
+  .adventure-on-hover:hover {
+    font-family: "Adventure";
+    letter-spacing: 0.17vmin; }
+
+.adventure-off-hover {
+  font-family: "Adventure";
+  letter-spacing: 0.17vmin; }
+  .adventure-off-hover:hover {
+    font-family: "Source Code Pro", monospace;
+    letter-spacing: 0; }
+
+h1 {
+  font-family: "Source Code Pro", monospace;
+  font-size: 5vmin;
+  line-height: 5vmin;
+  font-weight: bold; }
+  h1:hover {
+    font-family: "Adventure";
+    letter-spacing: 0.17vmin; }
+
+h2 {
+  font-family: "Source Code Pro", monospace;
+  font-size: 4vmin;
+  line-height: 4vmin;
+  font-weight: bold; }
+  h2:hover {
+    font-family: "Adventure";
+    letter-spacing: 0.17vmin; }
+
+h3 {
+  font-family: "Source Code Pro", monospace;
+  font-size: 3.2vmin;
+  line-height: 3.2vmin;
+  font-weight: bold; }
+  h3:hover {
+    font-family: "Adventure";
+    letter-spacing: 0.17vmin; }

@@ -18,14 +18,6 @@ class Asteria42 extends Asteria {
         ]);
     }
 
-    protected AboutContents() {
-        return (
-          <p>Asteria wants to learn the answer to life, the universe, and everything, but she needs your help!<br />
-          Asteria is the simplest possible neural network: a single input neuron linked to a single output neuron.<br />
-          The full equation for Asteria is y=ReLU(mx+b). Her initial state is y=ReLU(x), where m=1.<br />
-          Asteria will be trained to minimize R^2, the mean of (y-42)^2 over randomly-sampled values of x ranging from 0 to 1.</p>
-        )
-    }
     protected TestingContents() {
         return (
           <p>Asteria should output 42 no matter what input we give her.</p>

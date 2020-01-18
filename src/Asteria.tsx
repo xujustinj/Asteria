@@ -39,17 +39,6 @@ abstract class Asteria extends Component<{}> {
         }
     };
 
-    private About(): JSX.Element {
-        const AboutContents = this.AboutContents.bind(this);
-        return (
-          <div>
-            <h2>About</h2>
-            <AboutContents />
-          </div>
-        )
-    }
-    protected AboutContents(): JSX.Element { return <div />; }
-
     private Testing(): JSX.Element {
         const TestingContents = this.TestingContents.bind(this);
         return (
@@ -77,12 +66,10 @@ abstract class Asteria extends Component<{}> {
     protected TrainingContents(): JSX.Element { return <div />; }
 
     render() {
-        const About = this.About.bind(this);
         const Testing = this.Testing.bind(this);
         const Training = this.Training.bind(this);
         return (
           <div className="Asteria42">
-            <About />
             <Testing />
             <Training />
           </div>

@@ -1,0 +1,56 @@
+$margin: 2vmin;
+
+@mixin centre-children-horz {
+  display: flex;
+  justify-content: center;
+}
+
+@mixin centre-children-vert {
+  display: flex;
+  align-items: center;
+}
+
+@mixin centre-children {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+header {
+  background-color: #90ab9f;
+
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 10vmin;
+
+  @include centre-children-vert();
+
+  .logo-container {
+    @include centre-children();
+
+    a {
+      font-size: 6vmin;
+      font-weight: bold;
+      text-decoration: none;
+      color: white;
+    }
+  }
+
+  .heading {
+    margin-left: 2vmin;
+    margin-right: auto;
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .github-button {
+    color: transparent;
+    background-image: url(../img/GitHub_Logo_White.png);
+    width: 20vmin;
+    height: 8.2vmin;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-right: $margin;
+  }
+}
