@@ -1,4 +1,3 @@
-import React from "react";
 import Asteria from "../Asteria";
 import Network42 from "./Network42";
 
@@ -16,18 +15,6 @@ class Asteria42 extends Asteria {
             [m, this.net().m()],
             [b, this.net().b()],
         ]);
-    }
-
-    protected TestingContents() {
-        return (
-          <p>Asteria should output 42 no matter what input we give her.</p>
-        )
-    }
-    protected TrainingContents() {
-        return (
-          <p>We want Asteria to reach y=42~ReLU(42), where m=0 and b~42.<br />
-            To adjust m and b, Asteria samples values of x between 0 to 1 and does fancy backpropagation.</p>
-        )
     }
 }
 

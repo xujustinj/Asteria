@@ -24,7 +24,7 @@
   font-family: "Source Code Pro", monospace;
   &:hover {
       font-family: "Adventure";
-      letter-spacing: 0.17vmin;
+      letter-spacing: 0.12vmin;
   }
 }
 
@@ -43,23 +43,4 @@
 
 .adventure-off-hover {
   @include adventure-off-hover();
-}
-
-h1 {
-  @include adventure-on-hover();
-  font-size: 5vmin;
-  line-height: 5vmin;
-  font-weight: bold;
-}
-h2 {
-  @include adventure-on-hover();
-  font-size: 4vmin;
-  line-height: 4vmin;
-  font-weight: bold;
-}
-h3 {
-  @include adventure-on-hover();
-  font-size: 3.2vmin;
-  line-height: 3.2vmin;
-  font-weight: bold;
 }
