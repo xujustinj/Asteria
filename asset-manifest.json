@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/Asteria/static/css/main.eb1c3528.chunk.css",
-    "main.js": "/Asteria/static/js/main.474d48bb.chunk.js",
-    "main.js.map": "/Asteria/static/js/main.474d48bb.chunk.js.map",
+    "main.css": "/Asteria/static/css/main.8e29e7a7.chunk.css",
+    "main.js": "/Asteria/static/js/main.8a67a5b7.chunk.js",
+    "main.js.map": "/Asteria/static/js/main.8a67a5b7.chunk.js.map",
     "runtime-main.js": "/Asteria/static/js/runtime-main.21b4b72c.js",
     "runtime-main.js.map": "/Asteria/static/js/runtime-main.21b4b72c.js.map",
-    "static/js/2.2179954e.chunk.js": "/Asteria/static/js/2.2179954e.chunk.js",
-    "static/js/2.2179954e.chunk.js.map": "/Asteria/static/js/2.2179954e.chunk.js.map",
+    "static/js/2.7ca1f336.chunk.js": "/Asteria/static/js/2.7ca1f336.chunk.js",
+    "static/js/2.7ca1f336.chunk.js.map": "/Asteria/static/js/2.7ca1f336.chunk.js.map",
     "index.html": "/Asteria/index.html",
-    "precache-manifest.ce18e36c59372fd7666de16e5a37d86e.js": "/Asteria/precache-manifest.ce18e36c59372fd7666de16e5a37d86e.js",
+    "precache-manifest.92db28f4e611dc5d4d5f613e97776fcd.js": "/Asteria/precache-manifest.92db28f4e611dc5d4d5f613e97776fcd.js",
     "service-worker.js": "/Asteria/service-worker.js",
-    "static/css/main.eb1c3528.chunk.css.map": "/Asteria/static/css/main.eb1c3528.chunk.css.map",
-    "static/js/2.2179954e.chunk.js.LICENSE": "/Asteria/static/js/2.2179954e.chunk.js.LICENSE",
+    "static/css/main.8e29e7a7.chunk.css.map": "/Asteria/static/css/main.8e29e7a7.chunk.css.map",
+    "static/js/2.7ca1f336.chunk.js.LICENSE": "/Asteria/static/js/2.7ca1f336.chunk.js.LICENSE",
     "static/media/adventure.css": "/Asteria/static/media/madeon_runes_regular-webfont.df66f581.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.21b4b72c.js",
-    "static/js/2.2179954e.chunk.js",
-    "static/css/main.eb1c3528.chunk.css",
-    "static/js/main.474d48bb.chunk.js"
+    "static/js/2.7ca1f336.chunk.js",
+    "static/css/main.8e29e7a7.chunk.css",
+    "static/js/main.8a67a5b7.chunk.js"
   ]
 }
