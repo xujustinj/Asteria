@@ -33,3 +33,48 @@ debug.log
 
 # CRA garbage
 /src/react-app-env.d.ts
+
+# VSCode
+/.vscode
+
+
+# C++
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+# Rust
+
+/alt/rust/target
+Cargo.lock
+**/*.rs.bk

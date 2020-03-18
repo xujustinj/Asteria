@@ -1,0 +1,60 @@
+#include <cstddef>
+#include <ostream>
+#include <valarray>
+
+#include "linalg.h"
+
+using namespace std;
+
+
+Matrix transpose(const Matrix &mat) {
+    Matrix trans{Vector(mat.size()), mat[0].size()};
+    for (int r = 0; r < trans.size(); ++r) {
+        for (int c = 0; c < trans[r].size(); ++c) {
+            trans[r][c] = mat[c][r];
+        }
+    }
+    return trans;
+}
+
+Scalar dProd(const Vector &l, const Vector &r) {
+    return (l * r).sum();
+}
+Matrix cProd(const Vector &l, const Vector &r) {
+    Matrix mat(l.size());
+    for (int i = 0; i < mat.size(); ++i) {
+        mat[i] = l[i] * r;
+    }
+    return mat;
+}
+
+Matrix operator*(const Scalar &l, const Matrix &r) {
+    Matrix mat(r.size());
+    for (int i = 0; i < mat.size(); ++i) {
+        mat[i] = l * r[i];
+    }
+    return mat;
+}
+Vector operator*(const Matrix &l, const Vector &r) {
+    Vector vec(l.size());
+    for (int i = 0; i < vec.size(); ++i) {
+        vec[i] = (l[i] * r).sum();
+    }
+    return vec;
+}
+
+ostream &operator<<(ostream &out, const Vector &vec) {
+    auto it = begin(vec);
+    out << *it;
+    while (++it != end(vec)) {
+        out << '\t' << *it;
+    }
+    return out;
+}
+
+ostream &operator<<(ostream &out, const Matrix &mat) {
+    for (const Vector &row : mat) {
+        out << row << endl;
+    }
+    return out;
+}
