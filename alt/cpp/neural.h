@@ -2,6 +2,7 @@
 #define NEURAL_H
 
 #include <cstddef>
+#include <istream>
 #include <ostream>
 #include <vector>
 
@@ -26,6 +27,7 @@ class Layer {
     Vector back(const Vector &in, const Vector &cache, const Vector &delta);
     void learn(double sensitivity, double momentum);
 
+    friend std::istream &operator>>(std::istream &in, Layer &layer);
     friend std::ostream &operator<<(std::ostream &out, const Layer &layer);
 };
 
@@ -35,12 +37,14 @@ class MLP { // stands for Multi-Layer Perceptron
     std::vector<Layer> layers;
 
   public:
+    MLP(); // empty - must be initialized through other means
     MLP(std::initializer_list<size_t> widths);
 
     Vector eval(const Vector &in) const;
-    void train(const Vector &in, const Vector &out);
+    Vector train(const Vector &in, const Vector &out);
     void learn(double sensitivity, double momentum);
 
+    friend std::istream &operator>>(std::istream &in, MLP &mlp);
     friend std::ostream &operator<<(std::ostream &out, const MLP &mlp);
 };
 

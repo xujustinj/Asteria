@@ -1,4 +1,5 @@
 #include <cstddef>
+#include <istream>
 #include <ostream>
 #include <valarray>
 
@@ -17,9 +18,9 @@ Matrix transpose(const Matrix &mat) {
     return trans;
 }
 
-// Scalar dProd(const Vector &l, const Vector &r) {
-//     return (l * r).sum();
-// }
+Scalar dProd(const Vector &l, const Vector &r) {
+    return (l * r).sum();
+}
 Matrix cProd(const Vector &l, const Vector &r) {
     Matrix mat(l.size());
     for (int i = 0; i < mat.size(); ++i) {
@@ -50,6 +51,12 @@ Matrix operator*=(Matrix &l, const Scalar &r) {
     return l;
 }
 
+istream &operator>>(istream &in, Vector &vec) {
+    for (Scalar &x : vec) {
+        in >> x;
+    }
+    return in;
+}
 ostream &operator<<(ostream &out, const Vector &vec) {
     auto it = begin(vec);
     out << *it;
@@ -59,6 +66,12 @@ ostream &operator<<(ostream &out, const Vector &vec) {
     return out;
 }
 
+istream &operator>>(istream &in, Matrix &mat) {
+    for (Vector &row : mat) {
+        in >> row;
+    }
+    return in;
+}
 ostream &operator<<(ostream &out, const Matrix &mat) {
     for (const Vector &row : mat) {
         out << row << endl;

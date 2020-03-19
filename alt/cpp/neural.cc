@@ -1,4 +1,9 @@
 #include <cstddef>
+#include <istream>
+#include <ostream>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "linalg.h"
 #include "rand.h"
@@ -23,7 +28,7 @@ Vector dReLU(Vector vec) {
 Layer::Layer(size_t inWidth, size_t outWidth) :
     inWidth{inWidth}, outWidth{outWidth},
     w{randMatrix(outWidth, inWidth)}, b{randVector(outWidth)},
-    dw(Vector(0.0, inWidth), outWidth), db(0.0, inWidth)
+    dw(Vector(0.0, inWidth), outWidth), db(0.0, outWidth)
 {}
 
 Vector Layer::eval(const Vector &in) const {
@@ -47,6 +52,12 @@ void Layer::learn(double sensitivity, double momentum) {
     dw *= momentum;
 }
 
+istream &operator>>(istream &in, Layer &layer) {
+    for (int r = 0; r < layer.w.size(); ++r) {
+        in >> layer.w[r] >> layer.b[r];
+    }
+    return in;
+}
 ostream &operator<<(ostream &out, const Layer &layer) {
     for (int r = 0; r < layer.w.size(); ++r) {
         out << layer.w[r] << '\t' << layer.b[r] << endl;
@@ -57,6 +68,7 @@ ostream &operator<<(ostream &out, const Layer &layer) {
 
 // MLP
 
+MLP::MLP() : layers{} {}
 MLP::MLP(initializer_list<size_t> widths) : layers{} {
     auto it = widths.begin();
     size_t last = *it;
@@ -74,7 +86,7 @@ Vector MLP::eval(const Vector &in) const {
     }
     return result;
 }
-void MLP::train(const Vector &in, const Vector &out) {
+Vector MLP::train(const Vector &in, const Vector &out) {
     vector<Vector> results(layers.size());
     vector<Vector> caches(layers.size());
     results[0] = layers[0].eval(in, caches[0]);
@@ -82,10 +94,12 @@ void MLP::train(const Vector &in, const Vector &out) {
         results[i] = layers[i].eval(results[i-1], caches[i]);
     }
     Vector err = results.back() - out;
+    Vector ret = err;
     for (size_t i = layers.size() - 1; i > 0; --i) {
         err = layers[i].back(results[i-1], caches[i], err);
     }
     layers[0].back(in, caches[0], err);
+    return ret;
 }
 void MLP::learn(double sensitivity, double momentum) {
     for (Layer &layer : layers) {
@@ -93,6 +107,21 @@ void MLP::learn(double sensitivity, double momentum) {
     }
 }
 
+istream &operator>>(istream &in, MLP &mlp) {
+    string s{};
+    getline(in, s);
+    istringstream iss{s};
+    int last, next;
+    iss >> last;
+    while (iss >> next) {
+        mlp.layers.emplace_back(last, next);
+        last = next;
+    }
+    for (Layer &layer : mlp.layers) {
+        in >> layer;
+    }
+    return in;
+}
 ostream &operator<<(ostream &out, const MLP &mlp) {
     for (const Layer &layer : mlp.layers) {
         out << layer;
