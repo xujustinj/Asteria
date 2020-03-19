@@ -17,9 +17,9 @@ Matrix transpose(const Matrix &mat) {
     return trans;
 }
 
-Scalar dProd(const Vector &l, const Vector &r) {
-    return (l * r).sum();
-}
+// Scalar dProd(const Vector &l, const Vector &r) {
+//     return (l * r).sum();
+// }
 Matrix cProd(const Vector &l, const Vector &r) {
     Matrix mat(l.size());
     for (int i = 0; i < mat.size(); ++i) {
@@ -41,6 +41,13 @@ Vector operator*(const Matrix &l, const Vector &r) {
         vec[i] = (l[i] * r).sum();
     }
     return vec;
+}
+
+Matrix operator*=(Matrix &l, const Scalar &r) {
+    for (Vector &row : l) {
+        row *= r;
+    }
+    return l;
 }
 
 ostream &operator<<(ostream &out, const Vector &vec) {
