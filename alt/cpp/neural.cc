@@ -13,11 +13,25 @@
 using namespace std;
 
 
-// ReLU activation function
-Vector ReLU(Vector vec) {
-    return log(1.0 + exp(vec));
+// activation function (softplus ReLU)
+// Scalar Act(Scalar x) {
+//     Scalar y = log(1.0 + exp(x));
+//     return (y == numeric_limits<Scalar>::infinity()) ? x : y;
+// }
+Vector Act(const Vector &vec) {
+    Vector result = log(1.0 + exp(vec));
+    for (int i = 0; i < result.size(); ++i) {
+        if (result[i] == numeric_limits<Scalar>::infinity()) {
+            result[i] = vec[i];
+        }
+    }
+    return result;
 }
-Vector dReLU(Vector vec) {
+
+// Scalar dAct(Scalar x) {
+//     return 1.0 / (1.0 + exp(-x));
+// }
+Vector dAct(const Vector &vec) {
     return 1.0 / (1.0 + exp(-vec));
 }
 
@@ -32,24 +46,24 @@ Layer::Layer(size_t inWidth, size_t outWidth) :
 {}
 
 Vector Layer::eval(const Vector &in) const {
-    return ReLU(w * in + b);
+    return Act(w * in + b);
 }
 Vector Layer::eval(const Vector &in, Vector &cache) const {
     cache = w * in + b;
-    return ReLU(cache);
+    return Act(cache);
 }
 Vector Layer::back(const Vector &in, const Vector &cache, const Vector &delta) {
-    Vector d = dReLU(cache) * delta;
-    db += d;
+    Vector d = dAct(cache) * delta;
     dw += cProd(d, in);
+    db += d;
     return transpose(w) * d;
 }
 
-void Layer::learn(double sensitivity, double momentum) {
-    b -= sensitivity * db;
-    w -= sensitivity * dw;
-    db *= momentum;
+void Layer::learn(double persistence, double sensitivity, double momentum) {
+    w = persistence * w - sensitivity * dw;
+    b -= sensitivity * db; // persistence only applies to weights
     dw *= momentum;
+    db *= momentum;
 }
 
 istream &operator>>(istream &in, Layer &layer) {
@@ -60,7 +74,7 @@ istream &operator>>(istream &in, Layer &layer) {
 }
 ostream &operator<<(ostream &out, const Layer &layer) {
     for (int r = 0; r < layer.w.size(); ++r) {
-        out << layer.w[r] << '\t' << layer.b[r] << endl;
+        out << layer.w[r] << "\t\t" << layer.b[r] << endl;
     }
     return out;
 }
@@ -69,15 +83,15 @@ ostream &operator<<(ostream &out, const Layer &layer) {
 // MLP
 
 MLP::MLP() : layers{} {}
-MLP::MLP(initializer_list<size_t> widths) : layers{} {
-    auto it = widths.begin();
-    size_t last = *it;
-    while (++it != widths.end()) {
-        size_t next = *it;
-        layers.emplace_back(last, next);
-        last = next;
-    }
-}
+// MLP::MLP(initializer_list<size_t> widths) : layers{} {
+//     auto it = widths.begin();
+//     size_t last = *it;
+//     while (++it != widths.end()) {
+//         size_t next = *it;
+//         layers.emplace_back(last, next);
+//         last = next;
+//     }
+// }
 
 Vector MLP::eval(const Vector &in) const {
     Vector result = in;
@@ -101,9 +115,9 @@ Vector MLP::train(const Vector &in, const Vector &out) {
     layers[0].back(in, caches[0], err);
     return ret;
 }
-void MLP::learn(double sensitivity, double momentum) {
+void MLP::learn(double persistence, double sensitivity, double momentum) {
     for (Layer &layer : layers) {
-        layer.learn(sensitivity, momentum);
+        layer.learn(persistence, sensitivity, momentum);
     }
 }
 
@@ -123,6 +137,11 @@ istream &operator>>(istream &in, MLP &mlp) {
     return in;
 }
 ostream &operator<<(ostream &out, const MLP &mlp) {
+    out << mlp.layers[0].inWidth;
+    for (const Layer &layer : mlp.layers) {
+        out << ' ' << layer.outWidth;
+    }
+    out << endl;
     for (const Layer &layer : mlp.layers) {
         out << layer;
     }
