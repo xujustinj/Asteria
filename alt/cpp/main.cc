@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <sstream>
 #include <string>
 
@@ -16,6 +17,7 @@ int main(int argc, char *argv[]) {
     double persistence; istringstream{argv[3]} >> persistence;
     double sensitivity; istringstream{argv[4]} >> sensitivity;
     double momentum;    istringstream{argv[5]} >> momentum;
+    string filename{argv[6]};
 
     // Set up streams for floating point I/O
     const int precision = numeric_limits<Scalar>::max_digits10;
@@ -24,22 +26,29 @@ int main(int argc, char *argv[]) {
     cerr.precision(precision);
 
     MLP mlp{};
-    cin >> mlp;
+    ifstream{filename} >> mlp;
+    {
+        Vector in(mlp.inWidth());
+        Vector out(mlp.outWidth());
+        while (cin >> in >> out) {
+            registerSample(in, out);
+        }
+    }
 
     for (int gen = 1; gen <= generations; ++gen) {
-        cerr << "GENERATION " << gen << endl;
-        // cerr << mlp;
         Scalar rsq = 0.0;
         for (int i = 0; i < trials; ++i) {
-            Vector err = mlp.train({randScalar()}, {42.0});
+            const pair<Vector, Vector> sample = randSample();
+            Vector err = mlp.train(sample.first, sample.second);
             rsq += dProd(err, err);
         }
         if (rsq == 0.0) {
-            cerr << "Perfection achieved." << endl;
+            cerr << gen << "\tPerfection achieved." << endl;
             break;
         } else {
-            cerr << "r = " << sqrt(rsq / trials) << endl;
+            cerr << gen << "\tlog(r) = " << log(rsq / trials) / 2 << endl;
         }
+        // cerr << mlp;
         mlp.learn(persistence, sensitivity / trials, momentum);
     }
     cout << mlp;

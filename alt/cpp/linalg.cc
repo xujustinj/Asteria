@@ -10,8 +10,8 @@ using namespace std;
 
 Matrix transpose(const Matrix &mat) {
     Matrix trans{Vector(mat.size()), mat[0].size()};
-    for (int r = 0; r < trans.size(); ++r) {
-        for (int c = 0; c < trans[r].size(); ++c) {
+    for (size_t r = 0; r < trans.size(); ++r) {
+        for (size_t c = 0; c < trans[r].size(); ++c) {
             trans[r][c] = mat[c][r];
         }
     }
@@ -23,7 +23,7 @@ Scalar dProd(const Vector &l, const Vector &r) {
 }
 Matrix cProd(const Vector &l, const Vector &r) {
     Matrix mat(l.size());
-    for (int i = 0; i < mat.size(); ++i) {
+    for (size_t i = 0; i < mat.size(); ++i) {
         mat[i] = l[i] * r;
     }
     return mat;
@@ -31,14 +31,14 @@ Matrix cProd(const Vector &l, const Vector &r) {
 
 Matrix operator*(const Scalar &l, const Matrix &r) {
     Matrix mat(r.size());
-    for (int i = 0; i < mat.size(); ++i) {
+    for (size_t i = 0; i < mat.size(); ++i) {
         mat[i] = l * r[i];
     }
     return mat;
 }
 Vector operator*(const Matrix &l, const Vector &r) {
     Vector vec(l.size());
-    for (int i = 0; i < vec.size(); ++i) {
+    for (size_t i = 0; i < vec.size(); ++i) {
         vec[i] = (l[i] * r).sum();
     }
     return vec;

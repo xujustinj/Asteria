@@ -20,7 +20,7 @@ using namespace std;
 // }
 Vector Act(const Vector &vec) {
     Vector result = log(1.0 + exp(vec));
-    for (int i = 0; i < result.size(); ++i) {
+    for (size_t i = 0; i < result.size(); ++i) {
         if (result[i] == numeric_limits<Scalar>::infinity()) {
             result[i] = vec[i];
         }
@@ -41,8 +41,8 @@ Vector dAct(const Vector &vec) {
 // TODO: orthogonal Xavier initialization
 Layer::Layer(size_t inWidth, size_t outWidth) :
     inWidth{inWidth}, outWidth{outWidth},
-    w{randMatrix(outWidth, inWidth)}, b{randVector(outWidth)},
-    dw(Vector(0.0, inWidth), outWidth), db(0.0, outWidth)
+    w{randMatrix(outWidth, inWidth)}, dw(Vector(0.0, inWidth), outWidth),
+    b{randVector(outWidth)}, db(0.0, outWidth)
 {}
 
 Vector Layer::eval(const Vector &in) const {
@@ -67,13 +67,13 @@ void Layer::learn(double persistence, double sensitivity, double momentum) {
 }
 
 istream &operator>>(istream &in, Layer &layer) {
-    for (int r = 0; r < layer.w.size(); ++r) {
+    for (size_t r = 0; r < layer.w.size(); ++r) {
         in >> layer.w[r] >> layer.b[r];
     }
     return in;
 }
 ostream &operator<<(ostream &out, const Layer &layer) {
-    for (int r = 0; r < layer.w.size(); ++r) {
+    for (size_t r = 0; r < layer.w.size(); ++r) {
         out << layer.w[r] << "\t\t" << layer.b[r] << endl;
     }
     return out;
@@ -92,6 +92,13 @@ MLP::MLP() : layers{} {}
 //         last = next;
 //     }
 // }
+
+size_t MLP::inWidth() const {
+    return layers.front().inWidth;
+}
+size_t MLP::outWidth() const {
+    return layers.back().outWidth;
+}
 
 Vector MLP::eval(const Vector &in) const {
     Vector result = in;

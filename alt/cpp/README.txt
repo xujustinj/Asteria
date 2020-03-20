@@ -6,15 +6,14 @@ trials      - number of training data samples per generations
 persistence - weights are multiplied by this amount between generations
 sensitivity - size of step taken with respect to the training
 momentum    - amount of previous step used in next generation
+filename    - path to an .mlp format file to be used as the MLP
 
 INPUT
-.mlp file
+.io format file: (IO stands for Input/Output)
+  - Each line is an input vector followed by its corresponding output vector.
 
 OUTPUT
-.mlp file
-
-What is .mlp?
-MLP stands for Multi-Layer Perceptron. A .mlp file fully describes an MLP:
+.mlp format: (MLP stands for Multi-Layer Perceptron)
   - The first line is a series of whitespace-delimited integers representing the
     widths of the MLP's layers. The first integer corresponds to the width of
     the input layer, and the last integer corresponds to the width of the output
@@ -34,3 +33,6 @@ MLP stands for Multi-Layer Perceptron. A .mlp file fully describes an MLP:
     this layer, and b_i is the bias.
     Layers are obviously given in order. The program doesn't check to make sure
     that given layers have the right dimensions. Be careful!
+
+EXAMPLE
+./engine.exe 1000 100 1 1 0.2 Asteria42start.mlp < Asteria42.io > Asteria42.mlp

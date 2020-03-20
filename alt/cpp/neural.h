@@ -49,6 +49,9 @@ class MLP { // stands for Multi-Layer Perceptron
     MLP(); // empty - must be initialized through other means
     // MLP(std::initializer_list<size_t> widths);
 
+    size_t inWidth() const;
+    size_t outWidth() const;
+
     Vector eval(const Vector &in) const;
     Vector train(const Vector &in, const Vector &out);
     void learn(double persistence, double sensitivity, double momentum);
