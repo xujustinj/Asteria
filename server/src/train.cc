@@ -3,9 +3,9 @@
 #include <sstream>
 #include <string>
 
-#include "linalg.h"
-#include "neural.h"
-#include "rand.h"
+#include "mlp/linalg.h"
+#include "mlp/neural.h"
+#include "mlp/rand.h"
 
 using namespace std;
 
@@ -27,6 +27,7 @@ int main(int argc, char *argv[]) {
 
     MLP mlp{};
     ifstream{filename} >> mlp;
+
     {
         Vector in(mlp.inWidth());
         Vector out(mlp.outWidth());
@@ -38,7 +39,7 @@ int main(int argc, char *argv[]) {
     for (int gen = 1; gen <= generations; ++gen) {
         Scalar rsq = 0.0;
         for (int i = 0; i < trials; ++i) {
-            const pair<Vector, Vector> sample = randSample();
+            const pair<Vector, Vector> &sample = randSample();
             Vector err = mlp.train(sample.first, sample.second);
             rsq += dProd(err, err);
         }
@@ -48,7 +49,6 @@ int main(int argc, char *argv[]) {
         } else {
             cerr << gen << "\tlog(r) = " << log(rsq / trials) / 2 << endl;
         }
-        // cerr << mlp;
         mlp.learn(persistence, sensitivity / trials, momentum);
     }
     cout << mlp;

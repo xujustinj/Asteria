@@ -10,6 +10,10 @@ using namespace std;
 
 
 default_random_engine gen{};
+
+
+// Linear Algebra
+
 uniform_real_distribution<double> pm1(-1.0, 1.0);
 
 Scalar randScalar() {
@@ -37,12 +41,12 @@ Matrix randMatrix(size_t h, size_t w) {
 
 vector<pair<Vector, Vector>> _data{};
 
-uniform_int_distribution<size_t> p1(0, 0);
+uniform_int_distribution<size_t> idx(0, 0);
 
 void registerSample(const Vector &in, const Vector &out) {
     _data.emplace_back(in, out);
-    p1 = uniform_int_distribution<size_t>(0, _data.size() - 1);
+    idx = uniform_int_distribution<size_t>(0, _data.size() - 1);
 }
 const pair<Vector, Vector> &randSample() {
-    return _data[p1(gen)];
+    return _data[idx(gen)];
 }

@@ -61,7 +61,7 @@ ostream &operator<<(ostream &out, const Vector &vec) {
     auto it = begin(vec);
     out << *it;
     while (++it != end(vec)) {
-        out << '\t' << *it;
+        out << ' ' << *it;
     }
     return out;
 }
