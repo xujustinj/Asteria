@@ -35,4 +35,4 @@
 
 # Other
 *.txt
-build
+build/*
