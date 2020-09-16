@@ -11,7 +11,7 @@
 using namespace std;
 
 
-Layer::Layer(const size_t in_width, const size_t out_width) noexcept :
+Layer::Layer(const size_t in_width, const size_t out_width) :
     in_width{in_width}, out_width{out_width},
     w{rand_matrix_ortho(out_width, in_width)},
     dw(Vector(0.0, in_width), out_width),

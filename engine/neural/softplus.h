@@ -3,7 +3,10 @@
 #include "linalg/core.h"
 
 
-// "softplus" smooth ReLU activation function
+/**
+ * The "softplus" activation function is a smooth version of the rectified
+ * linear unit (ReLU).
+ */
 
 Scalar softplus(const Scalar x) noexcept;
 Vector softplus(const Vector &v) noexcept;

@@ -3,6 +3,16 @@
 #include <valarray>
 
 
+/**
+ * This module focuses on maximizing speed. For this reason, the requirements of
+ * the functions declared here are not actually asserted. Violating the
+ * requirements is undefined behaviour that may crash the program.
+ *
+ * The other error that might occur is failure to allocate memory. This is
+ * expected to be rare, so everything here is marked noexcept.
+ */
+
+
 // TYPE DEFINITIONS ////////////////////////////////////////////////////////////
 
 using Scalar = double;
@@ -22,37 +32,42 @@ using Matrix = std::valarray<Vector>;
  */
 
 // Scalar-Vector products
+// these are built-in so they can be overridden to noexcept
 // (built-in) Vector operator*(const Scalar c, const Vector &v);
 // (built-in) Vector &operator*=(Vector &v, const Scalar &c); // v = c * v
 
 // Scalar-Matrix products
-Matrix operator*(const Scalar c, const Matrix &a);
-Matrix &operator*=(Matrix &a, const Scalar &c); // a = c * a
+Matrix operator*(const Scalar c, const Matrix &a) noexcept;
+Matrix &operator*=(Matrix &a, const Scalar &c) noexcept; // a = c * a
 
 // Vector-Vector products
-Scalar inner_prod(const Vector &u, const Vector &v); // inner (dot) product
-Matrix outer_prod(const Vector &u, const Vector &v); // outer product
+// requires: size of u == size of v
+Scalar inner_prod(const Vector &u, const Vector &v) noexcept; // dot product
+Matrix outer_prod(const Vector &u, const Vector &v) noexcept;
 
 // Matrix-Vector products
-Vector operator*(const Matrix &a, const Vector &v);
-Vector &operator*=(Vector &a, const Matrix &v); // v = a * v
+// requires: width of a == size of v
+Vector operator*(const Matrix &a, const Vector &v) noexcept;
+Vector &operator*=(Vector &a, const Matrix &v) noexcept; // v = a * v
 
 // Matrix-Matrix products
-Matrix operator*(const Matrix &a, const Matrix &b);
-Matrix &operator*=(Matrix &a, const Matrix &b); // a = b * a
+// requires: width of a == height of b
+Matrix operator*(const Matrix &a, const Matrix &b) noexcept;
+Matrix &operator*=(Matrix &a, const Matrix &b) noexcept; // a = b * a
 
 
 // OTHER VECTOR OPERATIONS /////////////////////////////////////////////////////
 
-Scalar norm(const Vector &v);
+Scalar norm(const Vector &v) noexcept;
 
-Vector proj(const Vector &u, const Vector &v);
-Vector perp(const Vector &u, const Vector &v);
+// requires: size of u == size of v
+Vector proj(const Vector &u, const Vector &v) noexcept; // of v, onto u
+Vector perp(const Vector &u, const Vector &v) noexcept; // of v, w.r.t. u
 
-Vector scaled(const Vector &v, const Scalar len);
-Vector &scale(Vector &v, const Scalar len);
+Vector scaled(const Vector &v, const Scalar len) noexcept;
+Vector &scale(Vector &v, const Scalar len) noexcept;
 
 
 // OTHER MATRIX OPERATIONS /////////////////////////////////////////////////////
 
-Matrix transpose(const Matrix &a);
+Matrix transpose(const Matrix &a) noexcept;
