@@ -8,6 +8,7 @@
 #include "linalg/core.h"
 
 
+// TODO: add input/output bindings (labels for the input and output neurons)
 class MultiLayerPerceptron {
   private:
     std::vector<Layer> layers;
@@ -26,9 +27,9 @@ class MultiLayerPerceptron {
     Vector train(const Vector &in, const Vector &out);
 
     void learn(
-        const double persistence,
-        const double sensitivity,
-        const double momentum
+        const Scalar weight_decay_factor,
+        const Scalar step_size,
+        const Scalar momentum_factor
     );
 
     friend std::istream &operator>>(std::istream &in, MultiLayerPerceptron &mlp);

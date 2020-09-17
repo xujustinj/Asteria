@@ -6,6 +6,7 @@
 #include "linalg/core.h"
 
 
+// TODO: allow different layers to use different activation functions
 class Layer {
   public:
     const size_t in_width;
@@ -14,11 +15,11 @@ class Layer {
   private:
     // weights
     Matrix w;
-    Matrix dw;
+    Matrix dw; // TODO: restructure this so that training can be parallelized
 
     // biases
     Vector b;
-    Vector db;
+    Vector db; // TODO: restructure this so that training can be parallelized
 
   public:
     // initialize with random weights and biases
@@ -33,15 +34,15 @@ class Layer {
 
     // backpropagation
     Vector back(
-      const Vector &in,
-      const Vector &cache,
-      const Vector &delta
+        const Vector &in,
+        const Vector &cache,
+        const Vector &delta
     );
 
     void learn(
-        const double persistence,
-        const double sensitivity,
-        const double momentum
+        const Scalar weight_decay_factor,
+        const Scalar step_size,
+        const Scalar momentum_factor
     );
 
     friend std::istream &operator>>(std::istream &in, Layer &layer);

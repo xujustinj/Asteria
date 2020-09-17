@@ -1,9 +1,11 @@
 #include <istream>
 #include <ostream>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 #include <vector>
 
+#include "except.h"
 #include "layer.h"
 #include "linalg/core.h"
 
@@ -15,17 +17,18 @@ using namespace std;
 MultiLayerPerceptron::MultiLayerPerceptron(const vector<size_t> &widths) :
     layers{}
 {
-    vector<size_t>::const_iterator it = widths.begin();
-    size_t last_width = *it;
-    while (++it != widths.end()) {
-        const size_t next_width = *it;
-        layers.emplace_back(last_width, next_width);
-        last_width = next_width;
+    for (size_t i = 1; i < widths.size(); ++i) {
+        layers.emplace_back(widths[i-1], widths[i]);
     }
 }
 
 MultiLayerPerceptron::MultiLayerPerceptron(std::istream &in) : layers{} {
-    in >> *this;
+    if (in >> *this) {
+        return;
+    }
+    throw neural_exception(
+        "Failed to initialize MultiLayerPerceptron object from input stream."
+    );
 }
 
 
@@ -60,15 +63,15 @@ Vector MultiLayerPerceptron::train(const Vector &in, const Vector &out) {
     return ret;
 }
 void MultiLayerPerceptron::learn(
-    const double persistence,
-    const double sensitivity,
-    const double momentum
+    const Scalar weight_decay_factor,
+    const Scalar step_size,
+    const Scalar momentum_factor
 ) {
     for (Layer &layer : layers) {
         layer.learn(
-            persistence,
-            sensitivity,
-            momentum
+            weight_decay_factor,
+            step_size,
+            momentum_factor
         );
     }
 }
