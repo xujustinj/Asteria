@@ -3,6 +3,8 @@
 
 #include "rand.h"
 
+#include <iostream>
+#include "io.h"
 using namespace std;
 
 
@@ -34,7 +36,7 @@ size_t transposed_gram_schmidt(
     const size_t start,
     const Scalar len
 ) {
-    size_t end = a.size() < start + n ? a.size() : start + n;
+    size_t end = (a.size() < start + n) ? a.size() : start + n;
     for (size_t i = start; i < end; ++i) {
         a[i] = rand_vector(n);
         for (size_t j = start; j < i; ++j) {

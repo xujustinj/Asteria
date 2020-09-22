@@ -42,6 +42,7 @@ Matrix &operator*=(Matrix &a, const Scalar &c) noexcept; // a = c * a
 
 // Vector-Vector products
 // requires: size of u == size of v
+Scalar dot_prod(const Vector &u, const Vector &v) noexcept;
 Scalar inner_prod(const Vector &u, const Vector &v) noexcept; // dot product
 Matrix outer_prod(const Vector &u, const Vector &v) noexcept;
 

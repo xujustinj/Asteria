@@ -34,13 +34,13 @@ size_t Sampler::size() {
 //
 // Only after I wrote this did I learn about std::sample. Looking through the
 // MSVC implementation, it looks like this algorithm is actually faster.
-const vector<const Sample*> Sampler::get(const size_t k) {
+const vector<const Sample*> Sampler::random_batch(const size_t k) {
     const double k_inv = 1.0 / k;
     const size_t n = this->size();
 
     vector<const Sample*> reservoir(k);
     for (size_t i = 0; i < k; ++i) {
-        reservoir[k] = samples[i].get();
+        reservoir[i] = this->samples[i].get();
     }
 
     double w = pow(uniform(), k_inv);

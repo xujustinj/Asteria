@@ -24,6 +24,9 @@ Matrix &operator*=(Matrix &a, const Scalar &c) noexcept {
 }
 
 // Vector-Vector products
+Scalar dot_prod(const Vector &u, const Vector &v) noexcept {
+    return (u * v).sum();
+}
 Scalar inner_prod(const Vector &u, const Vector &v) noexcept {
     return (u * v).sum();
 }

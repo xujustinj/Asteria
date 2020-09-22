@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <limits>
 #include <list>
 #include <memory>
 #include <sstream>
@@ -25,7 +26,7 @@ int usage(const string &argv0, int code = 0) {
     << "  " << argv0 << " [options] (--start <file> | --hidden <widths>) [--] <file> ..." << endl
     << endl
     << "Options:" << endl
-    << "  " << "-e <n>, --epochs <n>    Epochs to train [default: 32]" << endl
+    << "  " << "-e <n>, --epochs <n>    Epochs to train [default: 1]" << endl
     << "  " << "-b <n>, --batch <n>     Batch size [default: size of training set]" << endl
     << "  " << "-d <x>, --decay <x>     Weight decay factor [default: 0.0]" << endl
     << "  " << "-m <x>, --momentum <x>  Momentum factor [default: 0.0]" << endl
@@ -40,12 +41,12 @@ int main(int argc, char *argv[]) {
     // TODO: this is a misnomer at the moment, due to the non-standard way
     // batching is done in rand/sampling. Fix this by resolving the TODO in
     // rand/sampling.
-    size_t epochs = 32;
+    size_t epochs = 1;
 
     /**
      * The number of samples used for training between each step.
      */
-    size_t batch_size = 32;
+    size_t batch_size = numeric_limits<size_t>::max();
 
     /**
      * The factor by which all weights are scaled towards 0 before each step. It
@@ -187,6 +188,10 @@ int main(int argc, char *argv[]) {
     }
     layer_widths[0] = input_width;
     layer_widths.emplace_back(output_width);
+
+    if (batch_size > sampler.size()) {
+        batch_size = sampler.size();
+    }
 
     if (mlp == nullptr) {
         mlp = make_unique<MultiLayerPerceptron>(layer_widths);

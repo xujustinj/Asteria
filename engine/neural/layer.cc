@@ -16,7 +16,7 @@ Layer::Layer(const size_t in_width, const size_t out_width) :
     w{rand_matrix_ortho(
         out_width, in_width,
         true,
-        2.0 * in_width / (in_width + out_width)
+        sqrt(2.0 * in_width / (in_width + out_width))
     )},
     dw(Vector(0.0, in_width), out_width),
     b(0.0, out_width),
