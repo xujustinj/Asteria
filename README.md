@@ -1,6 +1,6 @@
 # Asteria1
 
-Asteria is my quest to identify and translate text in live videos. To make it more interesting, I'm building as much as I can **from scratch**, and I'm avoiding existing tutorials and courses on machine learning. I've really enjoyed the intuition for performance and machine learning that this project has taught me so far.
+Asteria is my quest to build an AI that can identify and translate text in live videos. To make it more interesting, I'm building as much as I can **from scratch**, and I'm avoiding existing tutorials and courses on machine learning. I've really enjoyed the intuition for performance and machine learning that this project has taught me so far.
 
 Scope creep on the original [Asteria](https://github.com/xujustinj/Asteria) repository motivated me to split it into snapshots with better-defined scopes. This is the first snapshot of many.
 
