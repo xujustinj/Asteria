@@ -19,8 +19,8 @@ using namespace std;
 
 // Follows the http://docopt.org/ standard.
 int usage(const string &argv0, int code = 0) {
-    cerr <<
-    "Asteria's first training engine." << endl
+    cerr
+    << "Asteria's first training engine." << endl
     << endl
     << "Usage:" << endl
     << "  " << argv0 << " [options] (--start <file> | --hidden <widths>) [--] <file> ..." << endl
