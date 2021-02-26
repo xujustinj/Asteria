@@ -8,6 +8,8 @@
 using namespace std;
 
 
+
+
 Matrix transpose(const Matrix &mat) {
     Matrix trans{Vector(mat.size()), mat[0].size()};
     for (size_t r = 0; r < trans.size(); ++r) {
@@ -29,6 +31,14 @@ Matrix cProd(const Vector &l, const Vector &r) {
     return mat;
 }
 
+Scalar norm(const Vector &v) {
+    return dProd(v, v);
+}
+Vector proj(const Vector &u, const Vector &v) {
+    return dProd(v, u) / dProd(u, u) * u;
+}
+
+
 Matrix operator*(const Scalar &l, const Matrix &r) {
     Matrix mat(r.size());
     for (size_t i = 0; i < mat.size(); ++i) {
@@ -44,7 +54,7 @@ Vector operator*(const Matrix &l, const Vector &r) {
     return vec;
 }
 
-Matrix operator*=(Matrix &l, const Scalar &r) {
+Matrix &operator*=(Matrix &l, const Scalar &r) {
     for (Vector &row : l) {
         row *= r;
     }
